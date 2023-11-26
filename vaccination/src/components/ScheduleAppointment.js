@@ -1,33 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './css/ScheduleAppointment.css';
 
 const ScheduleAppointment = () => {
   const navigate = useNavigate();
 
-  const [vaccines, setVaccines] = useState([]);
-
-  const [selectedVaccines, setSelectedVaccines] = useState([]);
   const [patientFullName, setPatientFullName] = useState('');
   const [patientAge, setPatientAge] = useState('');
 
   const isFullNameValid = /^[a-zA-Z\s]+$/.test(patientFullName);
   const isAgeValid = /^\d{0,2}$/.test(patientAge);
   const isNotEmpty = patientFullName.trim() !== '' && patientAge.trim() !== '';
-
-  const handleCheckboxChange = (vaccineId) => {
-    setSelectedVaccines((prevSelected) => {
-      if (prevSelected.includes(vaccineId)) {
-        return prevSelected.filter((id) => id !== vaccineId);
-      } else {
-        if (prevSelected.length < 3) {
-          return [...prevSelected, vaccineId];
-        } else {
-          return prevSelected;
-        }
-      }
-    });
-  };
 
   const handleNext = () => {
     if (isNotEmpty && isFullNameValid && isAgeValid) {
@@ -38,7 +21,6 @@ const ScheduleAppointment = () => {
             fullName: patientFullName,
             age: patientAge,
           },
-          selectedVaccines,
         },
       });
     } else {
@@ -48,16 +30,18 @@ const ScheduleAppointment = () => {
     }
   };
 
-  const handleBack = () => {
-    navigate(-1);
-  };
-
   return (
     <div align='center'>
       <h1>Schedule Appointment.</h1>
       <h2>Let's get started with the patient's age.</h2>
-      <h4><br></br>Providing your age helps to ensure we're offering the right vaccine(s)
-        for your age.<br></br>Age restrictions may vary depending on state or vaccine.<br></br>All fields required.</h4>
+      <h4>
+        <br />
+        Providing your age helps to ensure we're offering the right vaccine(s) for your age.
+        <br />
+        Age restrictions may vary depending on state or vaccine.
+        <br />
+        All fields required.
+      </h4>
       <form>
         <div>
           <label>
@@ -82,12 +66,7 @@ const ScheduleAppointment = () => {
           {!isAgeValid && <p></p>}
         </div>
 
-        {/* Add checkboxes for vaccines here */}
-
-        <button type="button" onClick={handleBack}>
-          Back
-        </button>
-        <button type="button" onClick={handleNext} disabled={!isNotEmpty ||!isFullNameValid || !isAgeValid}>
+        <button type="button" onClick={handleNext} disabled={!isNotEmpty || !isFullNameValid || !isAgeValid}>
           Continue Scheduling
         </button>
       </form>

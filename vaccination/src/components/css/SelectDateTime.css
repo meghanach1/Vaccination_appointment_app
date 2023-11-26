@@ -1,0 +1,27 @@
+.location-container {
+    align-content: center;
+    display: block;
+    flex-wrap: wrap;
+  }
+  
+  .location-box {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin: 10px;
+    cursor: pointer;
+  }
+  
+  .location-box.selected {
+    border: 2px solid black;
+    font-weight: bold;
+  }
+
+  .selected-location {
+    margin-top: 20px;
+  }
+  
+  .selected-value {
+    font-weight: bold;
+    border: 2px solid black;
+    padding: 5px;
+  }

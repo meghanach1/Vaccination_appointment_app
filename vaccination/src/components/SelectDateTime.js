@@ -1,11 +1,10 @@
-// SelectDateTime.js
-
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
+import './css/SelectDateTime.css';
 
 const SelectDateTime = () => {
   const location = useLocation();
-  const { patientData, selectedVaccines, pincode } = location.state || {};
+  const { patientData, selectedVaccines } = location.state || {};
 
   const [selectedDate, setSelectedDate] = useState('');
   const [next15Days, setNext15Days] = useState([]);
@@ -13,17 +12,26 @@ const SelectDateTime = () => {
   const [selectedLocation, setSelectedLocation] = useState('');
   const [availableTimeSlots, setAvailableTimeSlots] = useState([]);
   const [selectedTimeSlot, setSelectedTimeSlot] = useState('');
+  const [centerInfo, setCenterInfo] = useState(null);
 
   useEffect(() => {
-    // Function to get the next 15 days
+    // Function to get the next 15 days starting from today
     const getNext15Days = () => {
-      const today = new Date();
+      const today = new Date(); // Use the current date
+      today.setDate(today.getDate() + 1);
+      // Initialize an empty array to store the next 15 days
       const next15DaysArray = [];
 
       for (let i = 0; i < 15; i++) {
         const date = new Date(today);
-        date.setDate(today.getDate() + i);
-        next15DaysArray.push(date.toISOString().split('T')[0]);
+        date.setUTCDate(today.getUTCDate() + i);
+        const formattedDate = new Intl.DateTimeFormat('en-US', {
+          year: 'numeric',
+          month: '2-digit',
+          day: '2-digit',
+        }).format(date);
+
+        next15DaysArray.push(formattedDate);
       }
 
       return next15DaysArray;
@@ -34,23 +42,42 @@ const SelectDateTime = () => {
   }, []);
 
   useEffect(() => {
-    // Placeholder function to fetch locations based on pincode
-    const fetchLocations = async () => {
-      // Replace this with actual data fetching logic
-      const data = [
-        { id: 1, name: 'Location A', address: '123 Main St' },
-        { id: 2, name: 'Location B', address: '456 Oak St' },
-        // Add more locations as needed
-      ];
+    // Function to fetch locations based on the selected date
+    const fetchLocationsData = async () => {
+      try {
+        const [month, day, year] = selectedDate.split('/');
+        const formattedDate = `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
 
-      setLocations(data);
+        console.log('Formatted Date:', formattedDate);
+
+        const response = await fetch(
+          `http://127.0.0.1:5000/api/get-locations?selectedDate=${encodeURIComponent(
+            formattedDate
+          )}`
+        );
+
+        // Check if the response is successful
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        // Parse the response JSON
+        const locationsData = await response.json();
+
+        console.log('Locations data:', locationsData);
+        setLocations(locationsData); // Set locations in state
+        setCenterInfo(null); // Reset center info when date changes
+      } catch (error) {
+        console.error('Error fetching locations:', error);
+      }
     };
 
-    // Fetch locations when the component mounts or selected date changes
+    // Fetch locations when the selected date changes
     if (selectedDate) {
-      fetchLocations();
+      fetchLocationsData();
     }
   }, [selectedDate]);
+  console.log('Selected date:', selectedDate);
 
   useEffect(() => {
     // Placeholder function to fetch available time slots based on location
@@ -64,15 +91,27 @@ const SelectDateTime = () => {
 
       setAvailableTimeSlots(data);
     };
-
+    console.log('selectedLocation :', selectedLocation);
     // Fetch available time slots when the location is selected
     if (selectedLocation) {
       fetchTimeSlots(selectedLocation);
     }
   }, [selectedLocation]);
 
+  const handleContinue = () => {
+    // Add logic here to handle the continue button click,
+    // for example, navigate to the next step or perform additional actions
+    console.log('Implement other features');
+  };
+
+  const handleLocationClick = (locationId) => {
+    setSelectedLocation((prevSelectedLocation) =>
+      prevSelectedLocation === locationId ? '' : locationId
+    );
+  };
+
   return (
-    <div align='center'>
+    <div align="center">
       <h1>Select dose date for vaccination.</h1>
 
       <div>
@@ -80,9 +119,19 @@ const SelectDateTime = () => {
           Select Date:
           <select
             value={selectedDate}
-            onChange={(e) => setSelectedDate(e.target.value)}
+            onChange={(e) => {
+              const selectedDateValue = e.target.value;
+              setSelectedDate(selectedDateValue);
+
+              // Convert the selected date to UTC format
+              const utcDate = new Date(selectedDateValue);
+              utcDate.setMinutes(utcDate.getMinutes() - utcDate.getTimezoneOffset());
+              console.log('Selected Date:', utcDate.toISOString().split('T')[0]);
+            }}
           >
-            <option value="" disabled>Select a date</option>
+            <option value="" disabled>
+              Select a date
+            </option>
             {next15Days.map((date) => (
               <option key={date} value={date}>
                 {new Date(date).toLocaleDateString('en-US', {
@@ -95,23 +144,28 @@ const SelectDateTime = () => {
             ))}
           </select>
         </label>
-        <p> Available locations will show once you choose a date. The page will refresh each time you select.</p>
+        <p>
+          {' '}
+          Available locations will show once you choose a date. The page will refresh each time
+          you select.
+        </p>
       </div>
 
       {locations.length > 0 && (
         <div>
           <h3>Available Locations</h3>
-          <select
-            value={selectedLocation}
-            onChange={(e) => setSelectedLocation(e.target.value)}
-          >
-            <option value="" disabled>Select a location</option>
+          <div className="location-container">
             {locations.map((location) => (
-              <option key={location.id} value={location.id}>
-                {location.name} - {location.address}
-              </option>
+              <div
+                key={location.id}
+                className={`location-box ${selectedLocation === location.id ? 'selected' : ''}`}
+                onClick={() => handleLocationClick(location.id)}
+              >
+                <h5>{location.center_name}</h5>
+                <p>{location.location}</p>
+              </div>
             ))}
-          </select>
+          </div>
         </div>
       )}
 
@@ -122,7 +176,9 @@ const SelectDateTime = () => {
             value={selectedTimeSlot}
             onChange={(e) => setSelectedTimeSlot(e.target.value)}
           >
-            <option value="" disabled>Select a time slot</option>
+            <option value="" disabled>
+              Select a time slot
+            </option>
             {availableTimeSlots.map((timeSlot) => (
               <option key={timeSlot.id} value={timeSlot.time}>
                 {timeSlot.time}
@@ -132,9 +188,29 @@ const SelectDateTime = () => {
         </div>
       )}
 
+      {locations.length > 0 && selectedLocation && (
+        <div>
+          <h3>Selected Center Information</h3>
+          <div className="selected-location">
+            <p>
+              Center Name:{' '}
+              <span className="selected-value">
+                {locations.find((location) => location.id === selectedLocation)?.center_name}
+              </span>
+            </p>
+            <p>
+              Location:{' '}
+              <span className="selected-value">
+                {locations.find((location) => location.id === selectedLocation)?.location}
+              </span>
+            </p>
+          </div>
+        </div>
+      )}
+
       {/* Continue with other components */}
-      <button type="button" onClick={() => console.log('Implement other features')}>
-        Continue
+      <button type="button" onClick={handleContinue}>
+        Continue Scheduling
       </button>
     </div>
   );
