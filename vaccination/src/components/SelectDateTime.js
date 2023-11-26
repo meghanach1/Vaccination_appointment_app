@@ -48,8 +48,6 @@ const SelectDateTime = () => {
         const [month, day, year] = selectedDate.split('/');
         const formattedDate = `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
 
-        console.log('Formatted Date:', formattedDate);
-
         const response = await fetch(
           `http://127.0.0.1:5000/api/get-locations?selectedDate=${encodeURIComponent(
             formattedDate
@@ -63,8 +61,7 @@ const SelectDateTime = () => {
 
         // Parse the response JSON
         const locationsData = await response.json();
-
-        console.log('Locations data:', locationsData);
+        console.log('locationsData', locationsData);
         setLocations(locationsData); // Set locations in state
         setCenterInfo(null); // Reset center info when date changes
       } catch (error) {
@@ -77,24 +74,36 @@ const SelectDateTime = () => {
       fetchLocationsData();
     }
   }, [selectedDate]);
-  console.log('Selected date:', selectedDate);
 
   useEffect(() => {
-    // Placeholder function to fetch available time slots based on location
+    // Function to fetch available time slots based on location
     const fetchTimeSlots = async (locationId) => {
-      // Replace this with actual data fetching logic
-      const data = [
-        { id: 1, time: '10:00 AM' },
-        { id: 2, time: '02:00 PM' },
-        // Add more time slots as needed
-      ];
+      try {
+        const response = await fetch(
+          `http://127.0.0.1:5000/api/get-time-slots?selectedId=${encodeURIComponent(locationId)}`
+        );
+        //console.log('locationId :',locationId);
+        // Check if the response is successful
+        
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
 
-      setAvailableTimeSlots(data);
+        // Parse the response JSON
+        const timeSlotsData = await response.json();
+        console.log('timeSlotsData :',timeSlotsData);
+        setAvailableTimeSlots(timeSlotsData.availableTimeSlots);
+        console.log('timeSlotsData.availableTimeSlots :',timeSlotsData.availableTimeSlots);
+      } catch (error) {
+        console.error('Error fetching time slots:', error);
+      }
     };
-    console.log('selectedLocation :', selectedLocation);
+
     // Fetch available time slots when the location is selected
     if (selectedLocation) {
       fetchTimeSlots(selectedLocation);
+      console.log('selectedLocation :',selectedLocation);
+      
     }
   }, [selectedLocation]);
 
@@ -148,6 +157,7 @@ const SelectDateTime = () => {
           {' '}
           Available locations will show once you choose a date. The page will refresh each time
           you select.
+          
         </p>
       </div>
 
@@ -157,53 +167,39 @@ const SelectDateTime = () => {
           <div className="location-container">
             {locations.map((location) => (
               <div
-                key={location.id}
-                className={`location-box ${selectedLocation === location.id ? 'selected' : ''}`}
-                onClick={() => handleLocationClick(location.id)}
+                key={location._id}
+                className={`location-box ${selectedLocation === location.center_name ? 'selected' : ''}`}
+                onClick={() => handleLocationClick(location._id)}
               >
-                <h5>{location.center_name}</h5>
+                <h4>{location.center_name}</h4>
                 <p>{location.location}</p>
               </div>
             ))}
           </div>
         </div>
       )}
-
+    
       {selectedLocation && (
         <div>
           <h3>Available Time Slots</h3>
-          <select
-            value={selectedTimeSlot}
-            onChange={(e) => setSelectedTimeSlot(e.target.value)}
-          >
-            <option value="" disabled>
-              Select a time slot
-            </option>
-            {availableTimeSlots.map((timeSlot) => (
-              <option key={timeSlot.id} value={timeSlot.time}>
-                {timeSlot.time}
-              </option>
-            ))}
-          </select>
-        </div>
-      )}
-
-      {locations.length > 0 && selectedLocation && (
+          <div>
+          {availableTimeSlots && availableTimeSlots.map((centerData) => (
+    <div key={centerData.centerId}>
+        <h3>Available Time Slots for {centerData.centerId}</h3>
         <div>
-          <h3>Selected Center Information</h3>
-          <div className="selected-location">
-            <p>
-              Center Name:{' '}
-              <span className="selected-value">
-                {locations.find((location) => location.id === selectedLocation)?.center_name}
-              </span>
-            </p>
-            <p>
-              Location:{' '}
-              <span className="selected-value">
-                {locations.find((location) => location.id === selectedLocation)?.location}
-              </span>
-            </p>
+            {Array.isArray(centerData.timeSlots) && centerData.timeSlots.map((timeSlot) => (
+                <button
+                    key={timeSlot}
+                    className={`time-slot-button ${selectedTimeSlot === timeSlot ? 'selected' : ''}`}
+                    onClick={() => setSelectedTimeSlot(timeSlot)}
+                >
+                    {timeSlot}
+                </button>
+            ))}
+        </div>
+    </div>
+))}
+
           </div>
         </div>
       )}
