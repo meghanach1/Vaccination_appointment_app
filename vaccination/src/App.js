@@ -2,6 +2,10 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import LoginPage from './components/LoginPage';
+import ManageAdmin from './components/ManageAdmin';
+import ManageAppointments from './components/ManageAppointments';
+import ManageStaff from './components/ManageStaff';
+import ManagePayments from './components/ManagePayments';
 import RegistrationPage from './components/RegistrationPage';
 import ForgotPassword from './components/ForgotPassword';
 import ScheduleAppointment from './components/ScheduleAppointment';
@@ -11,23 +15,48 @@ import PatientRecords from './components/PatientRecords';
 import SelectVaccines from './components/SelectVaccines';
 import SelectDateTime from './components/SelectDateTime';
 
-
-
-
 const App = () => {
   return (
     <Router>
       <Routes>
+        {/* Login routes */}
         <Route path="/loginpage" element={<LoginPage />} />
         <Route path="/" element={<LoginPage />} />
+
+        {/* Admin routes */}
+        <Route path="/manage-admin" element={<ManageAdmin />} />
+
+        {/* Appointments routes */}
+        <Route path="/manage-appointments" element={<ManageAppointments />} />
+
+        {/* Staff routes */}
+        <Route path="/manage-staff" element={<ManageStaff />} />
+
+        {/* Payments routes */}
+        <Route path="/manage-payments" element={<ManagePayments />} />
+
+        {/* Registration route */}
         <Route path="/registration" element={<RegistrationPage />} />
+
+        {/* Forgot password route */}
         <Route path="/forgot-password" element={<ForgotPassword />} />
+
+        {/* Schedule appointment route */}
         <Route path="/schedule-appointment" element={<ScheduleAppointment />} />
-        <Route path="/select-vaccines" element={<SelectVaccines />} />        
+
+        {/* Patient routes */}
         <Route path="/manage-patient" element={<ManagePatient />}>
-        <Route path="profile" element={<PatientProfile />} />
-        <Route path="records" element={<PatientRecords />} />
+          {/* Patient profile route */}
+          <Route path="profile" element={<PatientProfile />} />
+          
+          {/* Patient records route */}
+          <Route path="records" element={<PatientRecords />} />
         </Route>
+
+        {/* Select vaccines route */}
+        <Route path="/select-vaccines" element={<SelectVaccines />} />
+
+        {/* Select date and time route */}
         <Route path="/selectdatetime" element={<SelectDateTime />} />
       </Routes>
     </Router>
