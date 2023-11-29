@@ -58,6 +58,23 @@ body {
   .cancel-button:hover {
     background-color: #c9302c;
   }
+
+  .reginputs{
+    margin-top: 55px;
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+.reginput{
+    display: flex;
+    align-items: center;
+    margin: auto;
+    width: 480px;
+    height: 80px;
+    background: #eaeaea;
+    border-radius: 6px;
+}
   
   /* Add more styles as needed */
   

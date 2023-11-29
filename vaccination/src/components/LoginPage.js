@@ -2,6 +2,9 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import './css/LoginPage.css';
 
+import username from '/Users/c0s0hg4/Vaccination_appointment_app/vaccination/src/components/assets/username.svg'
+import password from '/Users/c0s0hg4/Vaccination_appointment_app/vaccination/src/components/assets/password.svg'
+
 const LoginPage = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
@@ -27,8 +30,9 @@ const LoginPage = () => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ username, password }),
+      
       });
-  
+      
       if (response.ok) {
         const data = await response.json();
         if (data.role === 'admin') {
@@ -51,7 +55,7 @@ const LoginPage = () => {
           navigate('/manage-staff');
           return;
         }
-      }
+      } 
   
       const patientResponse = await fetch('http://127.0.0.1:5000/login_patient', {
         method: 'POST',
@@ -69,55 +73,75 @@ const LoginPage = () => {
           return;
         }
       }
+console.log(response.ok)
+console.log(staffResponse.ok)
+console.log(patientResponse.ok)
+      if ((response.ok | staffResponse.ok | patientResponse.ok)) {
+        window.alert('Invalid username or password. If you are a new patient please register and try login.'); // Assuming your backend sends an 'error' field in the response
+      }
   
-    
     } catch (error) {
+      window.alert('Invalid username or password. If you are a new patient please register and try login.'); // Assuming your backend sends an 'error' field in the response
       console.error('Error during authentication:', error);
     }
   };
+
+  const handleRegistrationClick = () => {
+    navigate('/registration');
+    return;
+  }
   
+  const handleforgotPasswordClick = () => {
+    navigate('/forgot-password');
+    return;
+  }
+
+
 
   return (
+    
     <div>
       <header className="app-header">
-        {/* Header content */}
+      Vaccination Appointmnet Booking
       </header>
+      <div class="container">
+        <div class="header">
+          <div class="text"> Sign Up </div>
+          <div class="underline"></div>
+        </div>
+        <div class="inputs">
+          <div class="input">
+            <img src={username} alt="" />
+            <input 
+            type="text" 
+            placeholder="User Name" 
+            name="username"
+            value={formData.username}
+            onChange={handleChange}/>
+          </div>
 
-      <div className="login-page">
-        <div className="login-container">
-          <h2 align="center" onClick={handleSignIn}>
-            Sign in
-          </h2>
-          <form>
-            <input
-              type="text"
-              name="username"
-              placeholder="Username"
-              value={formData.username}
-              onChange={handleChange}
-            />
-            <br />
-            <input
-              type="password"
-              name="password"
-              placeholder="Password"
-              value={formData.password}
-              onChange={handleChange}
-            />
-            <br />
-            <button type="button" onClick={handleSignIn}>
-              Sign In
-            </button>
-          </form>
-          <p>
-            <Link to="/forgot-password">Forgot Password?</Link>
-          </p>
-          <p>
-            Don't have an account? <Link to="/registration">Register here</Link>.
-          </p>
+          <div class="input">
+            <img src={password} alt=""></img>
+            <input type="password"
+             placeholder="Password"
+             name="password"
+             value={formData.password}
+            onChange={handleChange} />
+          </div>
+
+          <div className="forgot-password" onClick={handleforgotPasswordClick}>
+            Forgot Password?  <span>Click Here!</span></div>
+          <div className="submit-container">
+            <div className="submit" onClick={handleRegistrationClick}>
+              Register here </div>
+            <div className="submit" onClick={handleSignIn}>
+              Login</div>
+          </div>
         </div>
       </div>
+
     </div>
+
   );
 };
 

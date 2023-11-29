@@ -62,8 +62,7 @@ const SelectVaccines = () => {
     <div align='center'>
       <h1>Select Vaccines.</h1>
       <h2>Choose up to 3 vaccines for the appointment.</h2>
-
-      <div >
+    <div >
   <h3>Recommended Vaccines</h3>
   {vaccineData && vaccineData.recommended && vaccineData.recommended.map((vaccine, index) => (
     <div key={index} >

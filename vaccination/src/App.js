@@ -14,6 +14,8 @@ import PatientProfile from './components/PatientProfile';
 import PatientRecords from './components/PatientRecords';
 import SelectVaccines from './components/SelectVaccines';
 import SelectDateTime from './components/SelectDateTime';
+import MedicalHistory from './components/MedicalHistory';
+
 
 const App = () => {
   return (
@@ -58,6 +60,9 @@ const App = () => {
 
         {/* Select date and time route */}
         <Route path="/selectdatetime" element={<SelectDateTime />} />
+        <Route path="/medical-history" element={<MedicalHistory />} />
+        
+        
       </Routes>
     </Router>
   );

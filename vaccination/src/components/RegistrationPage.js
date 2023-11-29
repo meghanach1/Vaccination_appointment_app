@@ -15,7 +15,6 @@ const RegistrationPage = () => {
     phone: '',
     address:'',
     email: '',
-    username: '',
     password: '',
   });
   
@@ -71,14 +70,6 @@ const RegistrationPage = () => {
           [name]: value,
         });
         break;
-
-        case 'username':
-          // Allow any string (you may want to use a more robust email validation)
-          setFormData({
-            ...formData,
-            [name]: value,
-          });
-          break;
   
       case 'password':
         // Allow any string (you may want to use a more robust password validation)
@@ -132,7 +123,7 @@ const RegistrationPage = () => {
     e.preventDefault();
 
     try {
-        const response = await fetch('http://127.0.0.1:5000/create_patient', {
+        const response = await fetch('http://127.0.0.1:5000/insert_data', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -243,17 +234,6 @@ const RegistrationPage = () => {
             type="email"
             name="email"
             value={formData.email}
-            onChange={handleChange}
-          />
-        </label>
-        <br />
-
-        <label>
-          Username:
-          <input
-            type="username"
-            name="username"
-            value={formData.username}
             onChange={handleChange}
           />
         </label>
