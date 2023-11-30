@@ -12,13 +12,13 @@ const PaymentForm = ({ onSuccess }) => {
   const [cardType, setCardType] = useState('credit'); // Default to credit card
   const navigate = useNavigate();
   const location = useLocation();
-  
+
 
 
   const { patientData, selectedVaccines, selectedDate, selectedLocation, selectedTimeSlot,totalPrice } = location.state || {};
   const patient_id  = patientData.patient_id;
   
-
+  console.log('patient_id:', patient_id);
 
 
   const handlePaymentSuccess = async (event) => {
@@ -144,10 +144,11 @@ const Payment = () => {
   const location = useLocation();
 
   const { patientData, selectedVaccines, selectedDate, selectedLocation, selectedTimeSlot,totalPrice } = location.state || {};
-  const patient_id  = patientData.patient_id;
+ const patient_id  = patientData.patient_id;
   console.log('selectedDate:', selectedDate);
 console.log('selectedLocation:', selectedLocation);
 console.log('selectedTimeSlot:', selectedTimeSlot);
+console.log('patient_id:', patient_id);
 
   const handlePaymentSuccess = () => {
     // Navigate to the appointment confirmation page

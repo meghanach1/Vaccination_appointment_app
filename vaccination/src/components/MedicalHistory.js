@@ -24,6 +24,7 @@ const [hasPreviousVaccinations, setHasPreviousVaccinations] = useState('');
   console.log('selectedDate:', selectedDate);
   console.log('selectedLocation:', selectedLocation);
   console.log('selectedTimeSlot:', selectedTimeSlot);
+  console.log('patient_id:', patient_id);
   const handleSubmit = async (e) => {
     e.preventDefault();
 

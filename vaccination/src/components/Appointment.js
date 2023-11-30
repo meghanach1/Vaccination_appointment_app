@@ -42,7 +42,7 @@ const navigate = useNavigate();
 
       // Assuming the server responds with some confirmation or additional data
       console.log('Appointment saved:', response.data);
-      navigate('/manage-patient');
+      
     } catch (error) {
       console.error('Error saving appointment:', error.message);
     }
