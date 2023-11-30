@@ -15,6 +15,8 @@ import PatientRecords from './components/PatientRecords';
 import SelectVaccines from './components/SelectVaccines';
 import SelectDateTime from './components/SelectDateTime';
 import MedicalHistory from './components/MedicalHistory';
+import Payment from './components/Payment';
+import Appointment from './components/Appointment';
 
 
 const App = () => {
@@ -61,6 +63,13 @@ const App = () => {
         {/* Select date and time route */}
         <Route path="/selectdatetime" element={<SelectDateTime />} />
         <Route path="/medical-history" element={<MedicalHistory />} />
+
+        {/* Select payment route */}
+        <Route path="/payment" element={<Payment />} />
+
+        {/* Select appointment route */}
+        <Route path="/appointment" element={<Appointment />} />
+        
         
         
       </Routes>

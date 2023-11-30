@@ -15,6 +15,7 @@ const RegistrationPage = () => {
     phone: '',
     address:'',
     email: '',
+    username: '',
     password: '',
   });
   
@@ -70,6 +71,14 @@ const RegistrationPage = () => {
           [name]: value,
         });
         break;
+
+        case 'username':
+          // Allow any string (you may want to use a more robust password validation)
+          setFormData({
+            ...formData,
+            [name]: value,
+          });
+          break;
   
       case 'password':
         // Allow any string (you may want to use a more robust password validation)
@@ -93,37 +102,11 @@ const RegistrationPage = () => {
   
   
 
-/*   const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    try {
-      const response = await fetch('http://127.0.0.1:5000/insert_data', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-      });
-
-      const data = await response.json();
-      console.log(data);
-
-      // Optionally, you can handle the response and navigate accordingly
-      if (response.ok) {
-        navigate('/login'); // Navigate to the login page on successful registration
-      } else {
-        // Handle registration failure
-        console.error('Registration failed');
-      }
-    } catch (error) {
-      console.error('Error during registration:', error);
-    }
-  }; */
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-        const response = await fetch('http://127.0.0.1:5000/insert_data', {
+        const response = await fetch('http://127.0.0.1:5000/patient/create_patient', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -239,6 +222,16 @@ const RegistrationPage = () => {
         </label>
         <br />
 
+        <label>
+          Username:
+          <input
+            type="username"
+            name="username"
+            value={formData.username}
+            onChange={handleChange}
+          />
+        </label>
+        <br />
         <label>
           Password:
           <input

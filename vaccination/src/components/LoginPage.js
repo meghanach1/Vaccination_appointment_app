@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import './css/LoginPage.css';
 
-import username from '/Users/c0s0hg4/Vaccination_appointment_app/vaccination/src/components/assets/username.svg'
-import password from '/Users/c0s0hg4/Vaccination_appointment_app/vaccination/src/components/assets/password.svg'
+import username from '/Users/Megha/Desktop/Vaccination_appointment/vaccination/src/components/assets/username.svg'
+import password from '/Users/Megha/Desktop/Vaccination_appointment/vaccination/src/components/assets/password.svg'
 
 const LoginPage = () => {
   const navigate = useNavigate();
@@ -24,7 +24,7 @@ const LoginPage = () => {
     const { username, password } = formData;
   
     try {
-      const response = await fetch('http://127.0.0.1:5000/login_admin', {
+      const response = await fetch('http://127.0.0.1:5000/admin/login_admin', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -41,7 +41,7 @@ const LoginPage = () => {
         }
       }
   
-      const staffResponse = await fetch('http://127.0.0.1:5000/login_staff', {
+      const staffResponse = await fetch('http://127.0.0.1:5000/staff/login_staff', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -57,7 +57,7 @@ const LoginPage = () => {
         }
       } 
   
-      const patientResponse = await fetch('http://127.0.0.1:5000/login_patient', {
+      const patientResponse = await fetch('http://127.0.0.1:5000/patient/login_patient', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -77,11 +77,11 @@ console.log(response.ok)
 console.log(staffResponse.ok)
 console.log(patientResponse.ok)
       if ((response.ok | staffResponse.ok | patientResponse.ok)) {
-        window.alert('Invalid username or password. If you are a new patient please register and try login.'); // Assuming your backend sends an 'error' field in the response
+        //window.alert('Invalid username or password. If you are a new patient please register and try login.'); // Assuming your backend sends an 'error' field in the response
       }
   
     } catch (error) {
-      window.alert('Invalid username or password. If you are a new patient please register and try login.'); // Assuming your backend sends an 'error' field in the response
+     // window.alert('Invalid username or password. If you are a new patient please register and try login.'); // Assuming your backend sends an 'error' field in the response
       console.error('Error during authentication:', error);
     }
   };

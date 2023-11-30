@@ -46,7 +46,7 @@ const SelectDateTime = () => {
         const formattedDate = `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
 
         const response = await fetch(
-          `http://127.0.0.1:5000/api/get-locations?selectedDate=${encodeURIComponent(formattedDate)}`
+          `http://127.0.0.1:5000/vaccine/api/get-locations?selectedDate=${encodeURIComponent(formattedDate)}`
         );
 
         if (!response.ok) {
@@ -69,7 +69,7 @@ const SelectDateTime = () => {
     const fetchTimeSlots = async (locationId) => {
       try {
         const response = await fetch(
-          `http://127.0.0.1:5000/api/get-time-slots?selectedId=${encodeURIComponent(locationId)}`
+          `http://127.0.0.1:5000/vaccine/api/get-time-slots?selectedId=${encodeURIComponent(locationId)}`
         );
 
         if (!response.ok) {

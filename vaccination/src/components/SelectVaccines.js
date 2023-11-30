@@ -16,7 +16,7 @@ const SelectVaccines = () => {
       try {
         // Fetch recommended and required vaccines based on the patient's age
         if (age) {
-          const response = await fetch(`http://127.0.0.1:5000/vaccines?age=${age}`);
+          const response = await fetch(`http://127.0.0.1:5000/vaccine/get-vaccines?age=${age}`);
           const data = await response.json();
           console.log('Vaccine Data:', data);
           setVaccineData(data);
