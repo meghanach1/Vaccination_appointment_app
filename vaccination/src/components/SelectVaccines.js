@@ -6,11 +6,13 @@ const SelectVaccines = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { patientData } = location.state || { patientData: {} };
-  const age = patientData.age ;
- 
+  const age = patientData.age;
+
+  const patient_id  = patientData.patient_id;
   const [selectedVaccines, setSelectedVaccines] = useState([]);
   const [vaccineData, setVaccineData] = useState({ recommendedVaccines: [], requiredVaccines: [] });
-
+  console.log("selectvaccinepatient",patientData.patient_id)
+  console.log("selectvaccinepatient",patient_id)
   useEffect(() => {
     const fetchVaccineData = async () => {
       try {
@@ -45,67 +47,101 @@ const SelectVaccines = () => {
       }
     });
   };
-   const isContinueButtonEnabled = selectedVaccines.length >= 1 && selectedVaccines.length <= 3;
+
+  const isContinueButtonEnabled = selectedVaccines.length >= 1 && selectedVaccines.length <= 3;
+
+  const getTotalPrice = () => {
+    // Calculate the total price of selected vaccines
+    return selectedVaccines.reduce((totalPrice, vaccineName) => {
+      const selectedVaccine = [...vaccineData.recommended, ...vaccineData.required].find(
+        (vaccine) => vaccine.name === vaccineName
+      );
+
+      return totalPrice + (selectedVaccine ? selectedVaccine.price : 0);
+    }, 0);
+  };
+  console.log("selectvaccines totatlaprice",getTotalPrice)
   const handleContinueScheduling = () => {
     if (isContinueButtonEnabled) {
-      // Navigate to SelectDateTime.js with selected vaccines and pin code
+      // Navigate to SelectDateTime.js with selected vaccines, pin code, and total price
       navigate('/selectdatetime', {
         state: {
           patientData,
           selectedVaccines,
+          totalPrice: getTotalPrice(),
+          patient_id,
         },
       });
     }
-  };
 
+  };
+  
   return (
-    <div align='center'>
+    <div align="center">
       <h1>Select Vaccines.</h1>
       <h2>Choose up to 3 vaccines for the appointment.</h2>
-    <div >
-  <h3>Recommended Vaccines</h3>
-  {vaccineData && vaccineData.recommended && vaccineData.recommended.map((vaccine, index) => (
-    <div key={index} >
-      <label>
-        <input
-          type="checkbox" 
-          checked={selectedVaccines.includes(vaccine.name)}
-          onChange={() => handleCheckboxChange(vaccine)}
-        />
-        <strong>{vaccine.name}</strong>
-      </label>
-      <p style={{ color: 'black' }}>
-        {vaccine.description}
-        <br />
-        (Price: ${vaccine.price}, Required Doses: {vaccine.requiredDoses})
-      </p>
-    </div>
-  ))}
-</div>
 
-<div>
-  <h3>Required Vaccines</h3>
-  {vaccineData && vaccineData.required && vaccineData.required.map((vaccine, index) => (
-    <div key={index} >
-      <label>
-        <input
-          type="checkbox"
-          checked={selectedVaccines.includes(vaccine.name)}
-          onChange={() => handleCheckboxChange(vaccine)}
-        />
-        <strong>{vaccine.name}</strong>
-      </label>
-      <p style={{ color: 'black' }}>
-        {vaccine.description}
-        <br />
-        (Price: ${vaccine.price}, Required Doses: {vaccine.requiredDoses})
-      </p>
-    </div>
-  ))}
-</div>
- <button type="button" onClick={handleContinueScheduling} disabled={!isContinueButtonEnabled}>
+      {/* Recommended Vaccines */}
+      <div>
+        <h3>Recommended Vaccines</h3>
+        {vaccineData &&
+          vaccineData.recommended &&
+          vaccineData.recommended.map((vaccine, index) => (
+            <div key={index}>
+              <label>
+                <input
+                  type="checkbox"
+                  checked={selectedVaccines.includes(vaccine.name)}
+                  onChange={() => handleCheckboxChange(vaccine)}
+                />
+                <strong>{vaccine.name}</strong>
+              </label>
+
+              <p style={{ color: 'black' }}>
+                {vaccine.description}
+                <br />
+                (Price: ${vaccine.price}, Required Doses: {vaccine.requiredDoses})
+              </p>
+            </div>
+          ))}
+      </div>
+
+      {/* Required Vaccines */}
+      <div>
+        <h3>Required Vaccines</h3>
+        {vaccineData &&
+          vaccineData.required &&
+          vaccineData.required.map((vaccine, index) => (
+            <div key={index}>
+              <label>
+                <input
+                  type="checkbox"
+                  checked={selectedVaccines.includes(vaccine.name)}
+                  onChange={() => handleCheckboxChange(vaccine)}
+                />
+                <strong>{vaccine.name}</strong>
+              </label>
+
+              <p style={{ color: 'black' }}>
+                {vaccine.description}
+                <br />
+                (Price: ${vaccine.price}, Required Doses: {vaccine.requiredDoses})
+              </p>
+            </div>
+          ))}
+      </div>
+
+      {/* Continue Scheduling Button */}
+      <button type="button" onClick={handleContinueScheduling} disabled={!isContinueButtonEnabled}>
         Continue Scheduling
       </button>
+
+      {/* Display total price */}
+      {isContinueButtonEnabled && (
+        <p style={{ marginTop: '10px', color: 'green' }}>
+          Total Price: ${getTotalPrice().toFixed(2)}
+        </p>
+      )}
     </div>
   );
 };

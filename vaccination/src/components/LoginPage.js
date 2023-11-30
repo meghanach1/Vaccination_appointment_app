@@ -36,7 +36,11 @@ const LoginPage = () => {
       if (response.ok) {
         const data = await response.json();
         if (data.role === 'admin') {
-          navigate('/manage-admin');
+          navigate('/manage-admin', {
+            state: {
+              admin_id: data._id, // Include the _id in the state
+            },
+          });
           return;
         }
       }
@@ -52,7 +56,11 @@ const LoginPage = () => {
       if (staffResponse.ok) {
         const staffData = await staffResponse.json();
         if (staffData.role === 'staff') {
-          navigate('/manage-staff');
+          navigate('/manage-staff', {
+            state: {
+              staff_id: staffData._id, // Include the _id in the state
+            },
+          });
           return;
         }
       } 
@@ -67,15 +75,26 @@ const LoginPage = () => {
   
       if (patientResponse.ok) {
         const patientData = await patientResponse.json();
-        console.log(patientData);
+        console.log(patientData.patient_id);
         if (patientData.role === 'Patient') {
-          navigate('/manage-patient');
+         navigate('/manage-patient', {
+            state: {
+              patient_id: patientData.patient_id, 
+              // Include the _id in the state
+            },
+          });
+          console.log("loginpatient",patientData.patient_id)
+          
           return;
+        
         }
+       
+        
       }
+      
 console.log(response.ok)
 console.log(staffResponse.ok)
-console.log(patientResponse.ok)
+console.log(patientResponse)
       if ((response.ok | staffResponse.ok | patientResponse.ok)) {
         //window.alert('Invalid username or password. If you are a new patient please register and try login.'); // Assuming your backend sends an 'error' field in the response
       }

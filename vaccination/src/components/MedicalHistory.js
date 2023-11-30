@@ -5,7 +5,8 @@ const MedicalHistory = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const { patientData, selectedVaccines, selectedDate, selectedLocation, selectedTimeSlot } = location.state || {};
+  const { patientData, selectedVaccines, selectedDate, selectedLocation, selectedTimeSlot,totalPrice } = location.state || {};
+  const patient_id  = patientData.patient_id;
   const initialRadioValue = 'no'; 
   // State variables to track user responses
   const [hasChronicCondition, setHasChronicCondition] = useState(null);
@@ -18,40 +19,74 @@ const [hasPreviousVaccinations, setHasPreviousVaccinations] = useState('');
   const [pregnancyBreastfeedingStatus, setPregnancyBreastfeedingStatus] = useState(null);
   const [formValid, setFormValid] = useState(false);
   const [vaccineDetails, setVaccineDetails] = useState('');
-
+  console.log("medical history totatlaprice",totalPrice)
   // Function to handle form submission
-  const handleSubmit = (e) => {
+  console.log('selectedDate:', selectedDate);
+  console.log('selectedLocation:', selectedLocation);
+  console.log('selectedTimeSlot:', selectedTimeSlot);
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Check if the form is valid
-    if (!formValid) {
-      alert('Please answer all questions before submitting.');
-      return;
-    }
+    try {
+      const response = await fetch('http://127.0.0.1:5000/patient/save-medical-history', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          patientId: patientData.id, // Assuming patient ID is present in patientData
+          selectedVaccines,
+          medicalHistoryData: {
+            hasChronicCondition,
+            hasPreviousVaccinations,
+            allergiesToFood,
+            seriousReactionHistory,
+            seizureOrNervousProblem,
+            bleedingDisorder,
+            pregnancyBreastfeedingStatus,
+            selectedDate,
+            selectedLocation,
+            selectedTimeSlot,
+            vaccineDetails: hasPreviousVaccinations === 'yes' ? vaccineDetails : null,
 
-    // Perform actions with the collected medical history data
-    const medicalHistoryData = {
-      hasChronicCondition: hasChronicCondition === 'yes',
-      previousVaccinations,
-      allergiesToFood,
-      seriousReactionHistory,
-      seizureOrNervousProblem,
-      bleedingDisorder,
-      pregnancyBreastfeedingStatus,
-      selectedDate,
-      selectedLocation,
-      selectedTimeSlot,
-      vaccineDetails: hasPreviousVaccinations === 'yes' ? vaccineDetails : null,
-    
-    };
-    saveMedicalHistoryData(medicalHistoryData);
-    navigate('/payment', {
-      state: {
-        patientData,
-        selectedVaccines,
-        medicalHistoryData,
-      },
-    });
+          },
+        }),
+      });
+      console.log(response)
+      console.log(totalPrice)
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+
+      // Continue with navigation after successful data save
+      navigate('/payment', {
+        state: {
+          patientData,
+          totalPrice,
+          selectedVaccines,
+          selectedDate,
+          selectedTimeSlot,
+          selectedLocation,
+          medicalHistoryData: {
+            hasChronicCondition,
+            hasPreviousVaccinations,
+            allergiesToFood,
+            seriousReactionHistory,
+            seizureOrNervousProblem,
+            bleedingDisorder,
+            pregnancyBreastfeedingStatus,
+            selectedDate,
+            selectedLocation,
+            selectedTimeSlot,
+            vaccineDetails: hasPreviousVaccinations === 'yes' ? vaccineDetails : null,
+            patient_id,
+          },
+        },
+      });
+    } catch (error) {
+      console.error('Error saving medical history data:', error);
+      alert('Error saving medical history data. Please try again.');
+    }
   };
   const saveMedicalHistoryData = (data) => {
     // Replace this with your actual logic for saving data to your backend or state

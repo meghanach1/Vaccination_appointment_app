@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { CardElement, Elements, useStripe, useElements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
-const stripePromise = loadStripe('your_publishable_key_here'); // Replace with your actual publishable key
+const stripePromise = loadStripe('pk_test_51OHrwDDDNz5rrtDRZKdRaCDPr2ggqQnL16Ey3gK9vRoxZ0I2e0Dt9dWqraHty6RL80iSbjTPV1RGiSbsfBoegnRr00eZUbWf45');
 
 const PaymentForm = ({ onSuccess }) => {
   const stripe = useStripe();
@@ -11,27 +11,88 @@ const PaymentForm = ({ onSuccess }) => {
   const [paymentError, setPaymentError] = useState(null);
   const [cardType, setCardType] = useState('credit'); // Default to credit card
   const navigate = useNavigate();
+  const location = useLocation();
+  
 
-  const handleSubmit = async (event) => {
+
+  const { patientData, selectedVaccines, selectedDate, selectedLocation, selectedTimeSlot,totalPrice } = location.state || {};
+  const patient_id  = patientData.patient_id;
+  
+
+
+
+  const handlePaymentSuccess = async (event) => {
     event.preventDefault();
-
+  
     if (!stripe || !elements) {
       return;
     }
-
+  
     const cardElement = elements.getElement(CardElement);
-
+  
+    if (!cardElement) {
+      setPaymentError('Card information is missing or invalid.');
+      return;
+    }
+  
     try {
-      const { token } = await stripe.createToken(cardElement);
+      const { token, error } = await stripe.createToken(cardElement);
+  
+      if (error) {
+        // Handle specific error cases
+        switch (error.code) {
+          case 'card_declined':
+            setPaymentError('Card declined. Please use the card number 4000 0000 0000 0002.');
+            break;
+          case 'insufficient_funds':
+            setPaymentError('Insufficient funds. Please use the card number 4000 0000 0000 9995.');
+            break;
+          case 'expired_card':
+            setPaymentError('Card expired. Please use the card number 4000 0000 0000 0069.');
+            break;
+          case 'incorrect_cvc':
+            setPaymentError('Incorrect CVC. Please use the card number 4000 0000 0000 0127.');
+            break;
+          default:
+            setPaymentError(`Payment error: ${error.message}`);
+        }
+        return;
+      }
 
-      console.log('Stripe Token:', token);
-      // Here, you would typically send the token to your server for payment processing
-      // For the sake of this example, we assume the payment is successful
+      // Make API call to create payment
+      const paymentData = {
+        patient_id: patient_id,
+        date_paid: new Date().toISOString(), // Use the current date and time
+        amount: totalPrice ,
+        payment_method: cardType,
+        payment_status: 'Completed'
+      };
+      console.log("payemntpatient",patient_id)
+      const response = await fetch('http://127.0.0.1:5000/payment/create_payment', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(paymentData),
+      });
+  
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+  
+      console.log('Payment API response:', response);
+  
+      // Here, you can show a dialog box that payment is successful
+      alert(`Payment successful! Total Price: ${totalPrice}`);
+
+  
+      // Continue with navigation after successful payment
       onSuccess();
     } catch (error) {
       setPaymentError(error.message);
     }
   };
+ 
 
   const handleCardTypeChange = (type) => {
     setCardType(type);
@@ -62,7 +123,7 @@ const PaymentForm = ({ onSuccess }) => {
         </label>
       </div>
 
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handlePaymentSuccess}>
         <CardElement />
         <button type="submit" disabled={!stripe}>
           Pay Now
@@ -80,10 +141,26 @@ const PaymentForm = ({ onSuccess }) => {
 
 const Payment = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const { patientData, selectedVaccines, selectedDate, selectedLocation, selectedTimeSlot,totalPrice } = location.state || {};
+  const patient_id  = patientData.patient_id;
+  console.log('selectedDate:', selectedDate);
+console.log('selectedLocation:', selectedLocation);
+console.log('selectedTimeSlot:', selectedTimeSlot);
 
   const handlePaymentSuccess = () => {
     // Navigate to the appointment confirmation page
-    navigate('/appointment');
+    navigate('/appointment', {
+      state: {
+        patient_id,
+        selectedVaccines,
+        selectedDate,
+        selectedLocation,
+        selectedTimeSlot,
+        totalPrice,
+      },
+    });
   };
 
   return (

@@ -5,7 +5,12 @@ import './css/SelectDateTime.css';
 const SelectDateTime = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { patientData, selectedVaccines } = location.state || {};
+ 
+
+
+  const { patientData, selectedVaccines,totalPrice } = location.state || {};
+  const patient_id  = patientData.patient_id;
+
   const [selectedDate, setSelectedDate] = useState('');
   const [next15Days, setNext15Days] = useState([]);
   const [locations, setLocations] = useState([]);
@@ -13,7 +18,8 @@ const SelectDateTime = () => {
   const [availableTimeSlots, setAvailableTimeSlots] = useState([]);
   const [selectedTimeSlot, setSelectedTimeSlot] = useState('');
   const [isContinueButtonEnabled, setContinueButtonEnabled] = useState(false);
-
+  console.log("selectdatetime totatlaprice",totalPrice)
+  console.log("selectdatepatient",patientData.patient_id)
   useEffect(() => {
     // Function to get the next 15 days starting from today
     const getNext15Days = () => {
@@ -96,7 +102,9 @@ const SelectDateTime = () => {
     }
   }, [selectedTimeSlot]);
 
-  
+  console.log('selectedDate:', selectedDate);
+  console.log('selectedLocation:', selectedLocation);
+  console.log('selectedTimeSlot:', selectedTimeSlot);
 
   const handleContinue = () => {
     if (isContinueButtonEnabled) {
@@ -105,6 +113,11 @@ const SelectDateTime = () => {
         state: {
           patientData,
           selectedVaccines,
+          selectedDate,
+          selectedLocation,
+          selectedTimeSlot,
+          totalPrice,
+          patient_id,
         },
       });
     }

@@ -1,9 +1,16 @@
 // src/components/ManagePatient.js
 import React from 'react';
+
 import { Link } from 'react-router-dom';
 import './css/ManagePatient.css';
+import { useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const ManagePatient = () => {
+  const location = useLocation();
+  const navigate = useNavigate();
+const { patient_id } = location.state || {};
+console.log("managepatientpatient",patient_id)
   return (
     <div>
       <header align='center'>
@@ -20,19 +27,21 @@ const ManagePatient = () => {
 
         <div >
           <form align='center'>
-            <Link to="/manage-patient/profile">
-              <button>View My Profile</button>
-            </Link>
+           
+            <button onClick={() => navigate('/manage-patient/profile', { state: { patient_id } })}>
+            View My Profile
+</button>
             <br />
             <br />
-            <Link to="/manage-patient/records">
-              <button>View My Records</button>
-            </Link>
+           
+            <button onClick={() => navigate('/manage-patient/records', { state: { patient_id } })}>
+            View My Records
+</button>
             <br />
             <br />
-            <Link to="/schedule-appointment">
-              <button>Schedule Appointment</button>
-            </Link>
+            <button onClick={() => navigate('/schedule-appointment', { state: { patient_id } })}>
+  Schedule Appointment
+</button>
             <br />
             <br />
            
