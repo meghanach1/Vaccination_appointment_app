@@ -1,4 +1,3 @@
-// RegistrationPage.js
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './css/globalStyles.css';
@@ -13,15 +12,16 @@ const RegistrationPage = () => {
     dateOfBirth: '',
     gender: '',
     phone: '',
-    address:'',
+    address: '',
     email: '',
     username: '',
     password: '',
+    confirmPassword: '', 
   });
-  
+  const [registrationConfirmed, setRegistrationConfirmed] = useState(false);
   const handleChange = (e) => {
     const { name, value } = e.target;
-  
+
     // Validation checks
     switch (name) {
       case 'firstName':
@@ -35,7 +35,7 @@ const RegistrationPage = () => {
           });
         }
         break;
-  
+
       case 'age':
         // Allow only numbers or an empty string
         if (/^\d*$/.test(value) || value === '') {
@@ -45,7 +45,7 @@ const RegistrationPage = () => {
           });
         }
         break;
-  
+
       case 'dateOfBirth':
         // Allow any string (you may want to use a date picker for a more robust solution)
         setFormData({
@@ -53,7 +53,7 @@ const RegistrationPage = () => {
           [name]: value,
         });
         break;
-  
+
       case 'phone':
         // Allow only 10 digits or an empty string
         if (/^\d{0,10}$/.test(value) || value === '') {
@@ -63,7 +63,7 @@ const RegistrationPage = () => {
           });
         }
         break;
-  
+
       case 'email':
         // Allow any string (you may want to use a more robust email validation)
         setFormData({
@@ -72,14 +72,14 @@ const RegistrationPage = () => {
         });
         break;
 
-        case 'username':
-          // Allow any string (you may want to use a more robust password validation)
-          setFormData({
-            ...formData,
-            [name]: value,
-          });
-          break;
-  
+      case 'username':
+        // Allow any string (you may want to use a more robust password validation)
+        setFormData({
+          ...formData,
+          [name]: value,
+        });
+        break;
+
       case 'password':
         // Allow any string (you may want to use a more robust password validation)
         setFormData({
@@ -87,9 +87,15 @@ const RegistrationPage = () => {
           [name]: value,
         });
         break;
-  
-      // Add more cases for other fields if needed
-  
+
+      case 'confirmPassword':
+        // Allow any string (you may want to use a more robust password validation)
+        setFormData({
+          ...formData,
+          [name]: value,
+        });
+        break;
+
       default:
         setFormData({
           ...formData,
@@ -97,39 +103,39 @@ const RegistrationPage = () => {
         });
     }
   };
-  
-  
-  
-  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    try {
-        const response = await fetch('http://127.0.0.1:5000/patient/create_patient', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(formData),
-        });
-
-        if (response.ok) {
-          navigate('/');
-         
-          
-            
-        } else {
-            console.error('Registration failed');
-        }
-    } catch (error) {
-        console.error('Error:', error);
+    // Check if the password and confirm password match
+    if (formData.password !== formData.confirmPassword) {
+      alert('Password and Confirm Password must match.');
+      return;
     }
-};
+
+    try {
+      const response = await fetch('http://127.0.0.1:5000/patient/create_patient', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (response.ok) {
+        navigate('/');
+      } else {
+        console.error('Registration failed');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
+
   const handleCancel = () => {
     navigate('/');
   };
-  
+
   return (
     <div>
       <h1 align='center'>Registration Page</h1>
@@ -232,6 +238,7 @@ const RegistrationPage = () => {
           />
         </label>
         <br />
+
         <label>
           Password:
           <input
@@ -243,14 +250,29 @@ const RegistrationPage = () => {
         </label>
         <br />
 
-        <button type="submit" onClick={handleSubmit} >Create an Account</button>
+        <label>
+          Confirm Password:
+          <input
+            type="password"
+            name="confirmPassword"
+            value={formData.confirmPassword}
+            onChange={handleChange}
+          />
+        </label>
+        <br />
+        <button type="submit">Create an Account</button>
         <button type="button" onClick={handleCancel}>
           Cancel
         </button>
       </form>
-      
+
+      {registrationConfirmed && (
+        <div>
+          <h2>Registration Confirmed</h2>
+          <p>Your registration was successful!</p>
+        </div>
+      )}
     </div>
   );
 };
-
 export default RegistrationPage;

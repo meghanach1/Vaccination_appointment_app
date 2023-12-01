@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-
 import { useLocation, useNavigate } from 'react-router-dom';
 
 const Appointment = () => {
@@ -13,13 +12,14 @@ const Appointment = () => {
     selectedTimeSlot,
     totalPrice,
   } = useLocation().state || {};
- 
+
   // Extracting properties from patientData
   const { patient_id, user_role } = patientData || {};
 
-  // State to store the appointment data
   const [appointmentData, setAppointmentData] = useState(null);
-const navigate = useNavigate();
+  const [selectedLocationName, setSelectedLocationName] = useState('');
+  const navigate = useNavigate();
+
   // Function to handle saving the appointment data to the database
   const saveAppointment = async () => {
     try {
@@ -40,9 +40,12 @@ const navigate = useNavigate();
       // Update state with the response data
       setAppointmentData(response.data);
 
+      // Get selected location name without making an API call
+      const locationName = getLocationName(selectedLocation);
+      setSelectedLocationName(locationName);
+
       // Assuming the server responds with some confirmation or additional data
       console.log('Appointment saved:', response.data);
-      
     } catch (error) {
       console.error('Error saving appointment:', error.message);
     }
@@ -53,35 +56,65 @@ const navigate = useNavigate();
     saveAppointment();
   }, []); // Empty dependency array to run the effect only once when the component mounts
 
+  // Helper function to get selected location name without making an API call
+  const getLocationName = (locationId) => {
+    const locationMap = {
+      '655d0bf382d9f899c56eb14a': '123 Main Street, Cityville',
+      '655e96d41a133dcc3da819b2': 'Suburb Wellness Hub',
+      '655e98a91a133dcc3dae00c7': 'Rural Health Clinic',
+      '655e98cd1a133dcc3dae643d': 'University Medical Center',
+      '655e9c7c1a133dcc3dbab297': 'Pediatric Vaccination Clinic',
+      '655e9dae1a133dcc3dbe21c4': 'Elderly Care Vaccination Center',
+    };
+
+    return locationMap[locationId] || 'Unknown Location';
+  };
+
+  // Function to navigate back to the "/manage-patient" route
+  const navigateToManagePatient = () => {
+    navigate('/manage-patient');
+  };
+
   return (
     <div>
       <h1>Appointment Confirmation</h1>
 
-      {/* Display selected data from Payment component */}
-    
+      <form>
+        <div>
+          <label>Selected Vaccine:</label>
+          <label>{JSON.stringify(selectedVaccines)}</label>
+        </div>
 
-      <h2>Selected Vaccine</h2>
-      <p>{JSON.stringify(selectedVaccines)}</p>
+        <div>
+          <label>Selected Date:</label>
+          <label>{JSON.stringify(selectedDate)}</label>
+        </div>
 
-      <h2>Selected Date</h2>
-      <p>{JSON.stringify(selectedDate)}</p>
+        <div>
+          <label>Selected Location:</label>
+          <label>{selectedLocationName}</label>
+        </div>
 
-      <h2>Selected Location</h2>
-      <p>{JSON.stringify(selectedLocation)}</p>
+        <div>
+          <label>Selected Time Slot:</label>
+          <label>{JSON.stringify(selectedTimeSlot)}</label>
+        </div>
 
-      <h2>Selected Time Slot</h2>
-      <p>{JSON.stringify(selectedTimeSlot)}</p>
-
-      <h2>Total Price</h2>
-      <p>{totalPrice}</p>
+        <div>
+          <label>Total Price:</label>
+          <label>{totalPrice}</label>
+        </div>
+      </form>
 
       {/* Display appointment data saved to the database */}
       {appointmentData && (
         <div>
           <h2>Appointment Data Saved</h2>
-          <p>{JSON.stringify(appointmentData)}</p>
         </div>
       )}
+
+      {/* Back to Home button */}
+      <button onClick={navigateToManagePatient}>Back to Home</button>
     </div>
   );
 };

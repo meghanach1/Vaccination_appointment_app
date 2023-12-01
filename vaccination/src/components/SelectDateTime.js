@@ -60,6 +60,7 @@ const SelectDateTime = () => {
         }
 
         const locationsData = await response.json();
+        console.log(locationsData)
         setLocations(locationsData);
       } catch (error) {
         console.error('Error fetching locations:', error);
@@ -103,7 +104,7 @@ const SelectDateTime = () => {
   }, [selectedTimeSlot]);
 
   console.log('selectedDate:', selectedDate);
-  console.log('selectedLocation:', selectedLocation);
+  console.log('selectedLocation:', setLocations);
   console.log('selectedTimeSlot:', selectedTimeSlot);
 
   const handleContinue = () => {
@@ -118,11 +119,26 @@ const SelectDateTime = () => {
           selectedTimeSlot,
           totalPrice,
           patient_id,
+          
         },
       });
     }
   };
-
+  const handleBack = () => {
+    // Navigate back to the /manage-patient page with patient_id
+    navigate('/manage-patient', {
+      state: {
+        state: {
+          patient_id,
+          selectedVaccines,
+          selectedDate,
+          selectedLocation,
+          selectedTimeSlot,
+          totalPrice,
+        },
+      },
+    });
+  };
   const handleLocationClick = (locationId) => {
     setSelectedLocation((prevSelectedLocation) =>
       prevSelectedLocation === locationId ? '' : locationId
@@ -190,7 +206,7 @@ const SelectDateTime = () => {
           <div>
             {availableTimeSlots && availableTimeSlots.map((centerData) => (
               <div key={centerData.centerId}>
-                <h3>Available Time Slots for {centerData.centerId}</h3>
+               
                 <div>
                   {Array.isArray(centerData.timeSlots) && centerData.timeSlots.map((timeSlot) => (
                     <button
@@ -207,7 +223,9 @@ const SelectDateTime = () => {
           </div>
         </div>
       )}
-
+<button type="button" onClick={handleBack}>
+          Back
+        </button>
       <button
         type="button"
         onClick={handleContinue}

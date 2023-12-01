@@ -113,6 +113,33 @@ const updateFormValidity = () => {
 };
 
   
+const handleBack = () => {
+  // Navigate back to the /manage-patient page with patient_id
+  navigate('/manage-patient', {
+    state: {
+      patientData,
+      totalPrice,
+      selectedVaccines,
+      selectedDate,
+      selectedTimeSlot,
+      selectedLocation,
+      medicalHistoryData: {
+        hasChronicCondition,
+        hasPreviousVaccinations,
+        allergiesToFood,
+        seriousReactionHistory,
+        seizureOrNervousProblem,
+        bleedingDisorder,
+        pregnancyBreastfeedingStatus,
+        selectedDate,
+        selectedLocation,
+        selectedTimeSlot,
+        vaccineDetails: hasPreviousVaccinations === 'yes' ? vaccineDetails : null,
+        patient_id,
+      },
+    },
+  });
+};
 
   useEffect(() => {
     console.log('useEffect updating form validity');
@@ -404,7 +431,9 @@ const updateFormValidity = () => {
         </div>
 
       
-
+        <button type="button" onClick={handleBack}>
+          Back 
+        </button>
         {/* Submit button */}
         <button type="submit" disabled={!formValid} >Continue to Payment</button>
       </form>

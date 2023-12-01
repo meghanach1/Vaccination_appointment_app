@@ -75,7 +75,15 @@ const SelectVaccines = () => {
     }
 
   };
-  
+  const handleBack = () => {
+    // Navigate back to the /manage-patient page with patient_id
+    navigate('/manage-patient', {
+      state: {
+        patient_id,
+      },
+    });
+  };
+
   return (
     <div align="center">
       <h1>Select Vaccines.</h1>
@@ -132,10 +140,14 @@ const SelectVaccines = () => {
       </div>
 
       {/* Continue Scheduling Button */}
+      <button type="button" onClick={handleBack}>
+          Back
+        </button>
       <button type="button" onClick={handleContinueScheduling} disabled={!isContinueButtonEnabled}>
         Continue Scheduling
       </button>
-
+   {/* Back button */}
+   
       {/* Display total price */}
       {isContinueButtonEnabled && (
         <p style={{ marginTop: '10px', color: 'green' }}>

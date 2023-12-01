@@ -35,7 +35,20 @@ const ScheduleAppointment = () => {
       console.error('Invalid input. Please check patient full name and age.');
     }
   };
-
+  const handleBack = () => {
+    // Navigate back to the /manage-patient page
+    navigate('/manage-patient', {
+      state: {
+        state: {
+          patientData: {
+            fullName: patientFullName,
+            age: patientAge,
+            patient_id,
+          },
+        },
+      },
+    });
+  };
   return (
     <div align="center">
       <h1>Schedule Appointment.</h1>
@@ -71,10 +84,13 @@ const ScheduleAppointment = () => {
           </label>
           {!isAgeValid && <p>Please enter a valid age.</p>}
         </div>
-
+        <button type="button" onClick={handleBack}>
+          Back 
+        </button>
         <button type="button" onClick={handleNext} disabled={!isNotEmpty || !isFullNameValid || !isAgeValid}>
           Continue Scheduling
         </button>
+        
       </form>
     </div>
   );

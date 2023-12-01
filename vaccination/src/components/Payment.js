@@ -92,7 +92,22 @@ const PaymentForm = ({ onSuccess }) => {
       setPaymentError(error.message);
     }
   };
- 
+   
+const handleBack = () => {
+  // Navigate back to the /manage-patient page with patient_id
+  navigate('/manage-patient', {
+    state: {
+      state: {
+        patient_id,
+        selectedVaccines,
+        selectedDate,
+        selectedLocation,
+        selectedTimeSlot,
+        totalPrice,
+      },
+    },
+  });
+};
 
   const handleCardTypeChange = (type) => {
     setCardType(type);
@@ -129,7 +144,9 @@ const PaymentForm = ({ onSuccess }) => {
           Pay Now
         </button>
       </form>
-
+      <button type="button" onClick={handleBack}>
+          Back
+        </button>
       {paymentError && <p style={{ color: 'red' }}>{paymentError}</p>}
 
       <button onClick={() => navigate('/appointment')}>
