@@ -50,10 +50,18 @@ const ScheduleAppointment = () => {
     });
   };
   return (
-    <div align="center">
-      <h1>Schedule Appointment.</h1>
-      <h2>Let's get started with the patient's age.</h2>
-      <h4>
+    <div className='schedule-container'>
+      <header align='center'>
+        <img
+          src={require('./images/logo.svg').default}
+          alt="Vaccination Logo"
+          className="header-logo"
+        />
+         <h1 align='center'>Schedule Appointment</h1>
+      </header>
+      
+      <h2 className='schedule-h2'>Let's get started with the patient's age.</h2>
+      <h4 className='schedule-h4'>
         <br />
         Providing your age helps to ensure we're offering the right vaccine(s) for your age.
         <br />
@@ -61,33 +69,33 @@ const ScheduleAppointment = () => {
         <br />
         All fields required.
       </h4>
-      <form>
+      <form className='schedule-form'>
         <div>
-          <label>
+          <label className='schedule-label'>
             Patient's Full Name:
-            <input
+            <input className='schedule-input'
               type="text"
               value={patientFullName}
               onChange={(e) => setPatientFullName(e.target.value.replace(/\d/g, ''))}
             />
           </label>
-          {!isFullNameValid}
+          {!isFullNameValid && <p className='schedule-p'></p>}
         </div>
         <div>
-          <label>
+          <label className='schedule-label'>
             Patient's Age (required):
-            <input
+            <input className='schedule-input'
               type="text"
               value={patientAge}
               onChange={(e) => setPatientAge(e.target.value.replace(/\D/g, '').substring(0, 2))}
             />
           </label>
-          {!isAgeValid && <p>Please enter a valid age.</p>}
+          {!isAgeValid && <p className='schedule-p'> Please enter a valid age.</p>}
         </div>
-        <button type="button" onClick={handleBack}>
+        <button className='schedule-button' type="button" onClick={handleBack}>
           Back 
         </button>
-        <button type="button" onClick={handleNext} disabled={!isNotEmpty || !isFullNameValid || !isAgeValid}>
+        <button type="button" className='schedule-button' onClick={handleNext} disabled={!isNotEmpty || !isFullNameValid || !isAgeValid}>
           Continue Scheduling
         </button>
         

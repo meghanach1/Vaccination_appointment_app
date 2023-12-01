@@ -1,16 +1,27 @@
-// src/components/ManagePatient.js
-import React from 'react';
 
-import { Link } from 'react-router-dom';
 import './css/ManagePatient.css';
-import { useLocation } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom';
+
+import React, { useEffect, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
 const ManagePatient = () => {
   const location = useLocation();
   const navigate = useNavigate();
-const { patient_id } = location.state || {};
-console.log("managepatientpatient",patient_id)
+  const { patient_id } = location.state || {};
+
+  const handleViewProfileClick = () => {
+    if (patient_id) {
+      console.log(patient_id)
+      navigate(`/manage-patient/profile/${patient_id}`);
+    } else {
+      console.error('Patient ID is undefined.');
+    }
+
+  };
+
+  
+
   return (
     <div>
       <header align='center'>
@@ -28,9 +39,8 @@ console.log("managepatientpatient",patient_id)
         <div >
           <form align='center'>
            
-            <button onClick={() => navigate('/manage-patient/profile', { state: { patient_id } })}>
-            View My Profile
-</button>
+          <button onClick={handleViewProfileClick}>View My Profile</button>
+      
             <br />
             <br />
            

@@ -1,27 +1,78 @@
-.location-container {
-    align-content: center;
-    display: block;
-    flex-wrap: wrap;
-  }
-  
-  .location-box {
-    border: 1px solid #ccc;
-    padding: 10px;
-    margin: 10px;
-    cursor: pointer;
-  }
-  
-  .location-box.selected {
-    border: 2px solid black;
-    font-weight: bold;
-  }
+/* Add this to your existing CSS */
 
-  .selected-location {
-    margin-top: 20px;
-  }
-  
-  .selected-value {
-    font-weight: bold;
-    border: 2px solid black;
-    padding: 5px;
-  }
+.select-datetime-container {
+  text-align: center;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.date-selection-container {
+  margin-bottom: 20px;
+}
+
+.select-date-label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: bold;
+}
+
+.select-date-dropdown {
+  padding: 8px;
+  font-size: 16px;
+}
+
+.date-info {
+  margin-top: 8px;
+  font-style: italic;
+  color: #555;
+}
+
+.available-locations {
+  margin-top: 20px;
+}
+
+/* Additional styles for improved aesthetics */
+.location-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.location-box {
+  border: 1px solid #ccc;
+  padding: 15px;
+  margin: 10px;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: border-color 0.3s ease-in-out;
+}
+
+.location-box.selected {
+  border: 2px solid #3498db;
+  font-weight: bold;
+  background-color: #f0f8ff;
+}
+
+.available-time-slots {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.time-slot-button {
+  background-color: #3498db;
+  color: #fff;
+  border: 1px solid #3498db;
+  padding: 10px;
+  margin: 5px;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background-color 0.3s ease-in-out;
+}
+
+.time-slot-button.selected {
+  background-color: #fff;
+  color: #3498db;
+  border: 1px solid #3498db;
+}

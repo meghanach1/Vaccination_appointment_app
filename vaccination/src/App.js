@@ -17,6 +17,8 @@ import SelectDateTime from './components/SelectDateTime';
 import MedicalHistory from './components/MedicalHistory';
 import Payment from './components/Payment';
 import Appointment from './components/Appointment';
+import ManagePatients from './components/Managepatients';
+import ProfileComponent from './components/ProfileComponent';
 
 
 const App = () => {
@@ -69,6 +71,11 @@ const App = () => {
 
         {/* Select appointment route */}
         <Route path="/appointment" element={<Appointment />} />
+
+         {/* Manage patients route */}
+         <Route path="/manage-patient" element={<ManagePatient />} />
+
+         <Route path="/manage-patient/profile/:patient_id" element={<ProfileComponent />} />
         
         
         

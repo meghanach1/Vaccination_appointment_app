@@ -158,7 +158,15 @@ const handleBack = () => {
 
   return (
     <div align="center">
-      <h1>Let's prepare for your visit</h1>
+      
+      <header align='center'>
+        <img
+          src={require('./images/logo.svg').default}
+          alt="Vaccination Logo"
+          className="header-logo"
+        />
+        <h1 align='center'>Let's prepare for your visit</h1>
+      </header>
       
       <form onSubmit={handleSubmit}>
         <h3 style={{ textAlign: 'left' }}>You're halfway done. To save you time in person, let's go over these questions now. Do your best to answer and we'll confirm later.</h3>

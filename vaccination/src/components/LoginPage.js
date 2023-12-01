@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import './css/LoginPage.css';
 
-import username from '/Users/Megha/Desktop/Vaccination_appointment/vaccination/src/components/assets/username.svg'
-import password from '/Users/Megha/Desktop/Vaccination_appointment/vaccination/src/components/assets/password.svg'
+import username from '/Users/c0s0hg4/Documents/project_chaitanya_changes/Vaccination_appointment_app/vaccination/src/components/assets/username.svg'
+import password from '/Users/c0s0hg4/Documents/project_chaitanya_changes/Vaccination_appointment_app/vaccination/src/components/assets/password.svg'
 
 const LoginPage = () => {
   const navigate = useNavigate();
@@ -92,9 +92,6 @@ const LoginPage = () => {
         
       }
       
-console.log(response.ok)
-console.log(staffResponse.ok)
-console.log(patientResponse)
       if ((response.ok | staffResponse.ok | patientResponse.ok)) {
         //window.alert('Invalid username or password. If you are a new patient please register and try login.'); // Assuming your backend sends an 'error' field in the response
       }
@@ -120,12 +117,17 @@ console.log(patientResponse)
   return (
     
     <div>
-      <header className="app-header">
+      <header className="login-app-header">
+      <img
+          src={require('./images/logo.svg').default}
+          alt="Vaccination Logo"
+          className="header-logo"
+        />
       Vaccination Appointmnet Booking
       </header>
-      <div class="container">
+      <div class="logincontainer">
         <div class="header">
-          <div class="text"> Sign Up </div>
+          <div class="logintext"> Sign Up </div>
           <div class="underline"></div>
         </div>
         <div class="inputs">

@@ -1,0 +1,43 @@
+/* src/components/ProfileComponent.module.css */
+
+/* Container styling */
+.container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Heading styling */
+  h1 {
+    color: #db4d34;
+  }
+  
+  /* Patient information styling */
+  p {
+    margin: 10px 0;
+    color: #333;
+  }
+  
+  /* Loading message styling */
+  .loading-message {
+    font-style: italic;
+    color: #777;
+  }
+  
+  /* Add some styles to make it visually appealing */
+  .p-even {
+    background-color: #f9f9f9;
+    padding: 8px;
+    border-radius: 4px;
+  }
+  
+  .p-odd {
+    background-color: #e1f5fe;
+    padding: 8px;
+    border-radius: 4px;
+  }
+  

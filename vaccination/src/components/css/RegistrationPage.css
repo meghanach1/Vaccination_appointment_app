@@ -1,80 +1,74 @@
 /* RegistrationPage.css */
-
-body {
-    font-family: 'Arial', sans-serif;
-    background-color: #f4f4f4;
-    margin: 0;
-    padding: 0;
-  }
   
-  .container {
-    width: 50%;
-    margin: auto;
-  }
-  
-  h1 {
-    text-align: center;
-    color: #333;
-  }
-  
-  form {
-    background: #fff;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  }
-  
-  label {
-    display: block;
-    margin: 15px 0;
-  }
-  
-  input {
-    width: 100%;
-    padding: 10px;
-    margin-top: 5px;
-    margin-bottom: 15px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-  }
-  
-  button {
-    background-color: #4caf50;
-    color: white;
-    padding: 15px 20px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-  }
-  
-  button:hover {
-    background-color: #45a049;
-  }
-  
-  .cancel-button {
-    background-color: #d9534f;
-  }
-  
-  .cancel-button:hover {
-    background-color: #c9302c;
-  }
-
-  .reginputs{
-    margin-top: 55px;
-    display: flex;
-    flex-direction: column;
-    gap: 25px;
+.regcontainer{
+  display :flex;
+  flex-direction: column;
+  margin: auto;
+  width: 600px;
+  margin-top: 200px;
+  background: #ffff;
+  padding-bottom: 30px;
 }
 
-.reginput{
-    display: flex;
-    align-items: center;
-    margin: auto;
-    width: 480px;
-    height: 80px;
-    background: #eaeaea;
-    border-radius: 6px;
+h1 {
+  text-align: center;
+  color: #333;
 }
-  
-  /* Add more styles as needed */
-  
+
+form {
+  background: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+
+
+.reginput {
+  display: flex;
+  align-items: center;
+  margin: auto;
+  width: 480px;
+  height: 80px;
+  background: #eaeaea;
+  border-radius: 6px;
+}
+
+.reginput reginput{
+  height: 50px;
+  width: 400px;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: #797979;
+  font-size: 19px;
+}
+
+button {
+  background-color: #4caf50;
+  color: white;
+  padding: 15px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #45a049;
+}
+
+.cancel-button {
+  background-color: #d9534f;
+}
+
+.cancel-button:hover {
+  background-color: #c9302c;
+}
+
+.text{
+color: #9d2500;
+font-size: 34px;
+font-weight: 700;
+}
+
+/* Add more styles as needed */

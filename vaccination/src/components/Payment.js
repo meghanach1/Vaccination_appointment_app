@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { CardElement, Elements, useStripe, useElements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
 import { useLocation, useNavigate } from 'react-router-dom';
+import './css/Payment.css';
 
 const stripePromise = loadStripe('pk_test_51OHrwDDDNz5rrtDRZKdRaCDPr2ggqQnL16Ey3gK9vRoxZ0I2e0Dt9dWqraHty6RL80iSbjTPV1RGiSbsfBoegnRr00eZUbWf45');
 
@@ -13,31 +14,28 @@ const PaymentForm = ({ onSuccess }) => {
   const navigate = useNavigate();
   const location = useLocation();
 
+  const { patientData, selectedVaccines, selectedDate, selectedLocation, selectedTimeSlot, totalPrice } = location.state || {};
+  const patient_id = patientData.patient_id;
 
-
-  const { patientData, selectedVaccines, selectedDate, selectedLocation, selectedTimeSlot,totalPrice } = location.state || {};
-  const patient_id  = patientData.patient_id;
-  
   console.log('patient_id:', patient_id);
-
 
   const handlePaymentSuccess = async (event) => {
     event.preventDefault();
-  
+
     if (!stripe || !elements) {
       return;
     }
-  
+
     const cardElement = elements.getElement(CardElement);
-  
+
     if (!cardElement) {
       setPaymentError('Card information is missing or invalid.');
       return;
     }
-  
+
     try {
       const { token, error } = await stripe.createToken(cardElement);
-  
+
       if (error) {
         // Handle specific error cases
         switch (error.code) {
@@ -63,11 +61,11 @@ const PaymentForm = ({ onSuccess }) => {
       const paymentData = {
         patient_id: patient_id,
         date_paid: new Date().toISOString(), // Use the current date and time
-        amount: totalPrice ,
+        amount: totalPrice,
         payment_method: cardType,
-        payment_status: 'Completed'
+        payment_status: 'Completed',
       };
-      console.log("payemntpatient",patient_id)
+      console.log('payemntpatient', patient_id);
       const response = await fetch('http://127.0.0.1:5000/payment/create_payment', {
         method: 'POST',
         headers: {
@@ -75,68 +73,69 @@ const PaymentForm = ({ onSuccess }) => {
         },
         body: JSON.stringify(paymentData),
       });
-  
+
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
-  
+
       console.log('Payment API response:', response);
-  
+
       // Here, you can show a dialog box that payment is successful
       alert(`Payment successful! Total Price: ${totalPrice}`);
 
-  
       // Continue with navigation after successful payment
       onSuccess();
     } catch (error) {
       setPaymentError(error.message);
     }
   };
-   
-const handleBack = () => {
-  // Navigate back to the /manage-patient page with patient_id
-  navigate('/manage-patient', {
-    state: {
+
+  const handleBack = () => {
+    // Navigate back to the /manage-patient page with patient_id
+    navigate('/manage-patient', {
       state: {
-        patient_id,
-        selectedVaccines,
-        selectedDate,
-        selectedLocation,
-        selectedTimeSlot,
-        totalPrice,
+        state: {
+          patient_id,
+          selectedVaccines,
+          selectedDate,
+          selectedLocation,
+          selectedTimeSlot,
+          totalPrice,
+        },
       },
-    },
-  });
-};
+    });
+  };
 
   const handleCardTypeChange = (type) => {
     setCardType(type);
   };
 
   return (
-    <div align="center">
+    <div align='center'>
       <h1>Payment</h1>
       <p>Select Card Type:</p>
-      <div>
-        <label>
-          <input
-            type="radio"
-            value="debit"
-            checked={cardType === 'debit'}
-            onChange={() => handleCardTypeChange('debit')}
-          />
-          Debit Card
-        </label>
-        <label>
-          <input
-            type="radio"
-            value="credit"
-            checked={cardType === 'credit'}
-            onChange={() => handleCardTypeChange('credit')}
-          />
-          Credit Card
-        </label>
-      </div>
+      <div style={{ display: 'flex', justifyContent: 'center' }}>
+    <label className='paymentclasslabel'>
+      <input
+        className='paymentlabel'
+        type="radio"
+        value="debit"
+        checked={cardType === 'debit'}
+        onChange={() => handleCardTypeChange('debit')}
+      />
+      Debit Card
+    </label>
+    <label className='paymentclasslabel'>
+      <input
+        className='paymentlabel'
+        type="radio"
+        value="credit"
+        checked={cardType === 'credit'}
+        onChange={() => handleCardTypeChange('credit')}
+      />
+      Credit Card
+    </label>
+  </div>
 
       <form onSubmit={handlePaymentSuccess}>
         <CardElement />
@@ -145,8 +144,8 @@ const handleBack = () => {
         </button>
       </form>
       <button type="button" onClick={handleBack}>
-          Back
-        </button>
+        Back
+      </button>
       {paymentError && <p style={{ color: 'red' }}>{paymentError}</p>}
 
       <button onClick={() => navigate('/appointment')}>
@@ -160,12 +159,12 @@ const Payment = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const { patientData, selectedVaccines, selectedDate, selectedLocation, selectedTimeSlot,totalPrice } = location.state || {};
- const patient_id  = patientData.patient_id;
+  const { patientData, selectedVaccines, selectedDate, selectedLocation, selectedTimeSlot, totalPrice } = location.state || {};
+  const patient_id = patientData.patient_id;
   console.log('selectedDate:', selectedDate);
-console.log('selectedLocation:', selectedLocation);
-console.log('selectedTimeSlot:', selectedTimeSlot);
-console.log('patient_id:', patient_id);
+  console.log('selectedLocation:', selectedLocation);
+  console.log('selectedTimeSlot:', selectedTimeSlot);
+  console.log('patient_id:', patient_id);
 
   const handlePaymentSuccess = () => {
     // Navigate to the appointment confirmation page

@@ -137,134 +137,119 @@ const RegistrationPage = () => {
   };
 
   return (
-    <div>
+    <form onSubmit={handleSubmit}>
       <h1 align='center'>Registration Page</h1>
-      <form onSubmit={handleSubmit}>
-        <label>
-          First Name:
+     
+      <div class="input">
           <input
             type="text"
+            placeholder="First Name"
             name="firstName"
             value={formData.firstName}
-            onChange={handleChange}
-          />
-        </label>
+            onChange={handleChange} />
+        </div>
+
         <br />
 
-        <label>
-          Last Name:
-          <input
-            type="text"
+        <div class="input">
+          <input type="text"
+            placeholder="Last Name"
             name="lastName"
             value={formData.lastName}
-            onChange={handleChange}
-          />
-        </label>
+            onChange={handleChange} />
+        </div>
         <br />
+        
+     
 
-        <label>
-          Age:
-          <input
-            type="text"
+        <div class="input">
+          <input type="text"
+            placeholder="Age"
             name="age"
             value={formData.age}
-            onChange={handleChange}
-          />
-        </label>
+            onChange={handleChange} />
+        </div>
         <br />
 
-        <label>
-          Date of Birth:
-          <input
-            type="text"
+        <div class="input">
+          <input type="text"
+            placeholder="Date of Birth"
             name="dateOfBirth"
             value={formData.dateOfBirth}
-            onChange={handleChange}
-          />
-        </label>
+            onChange={handleChange} />
+        </div>
         <br />
 
-        <label>
-          Gender:
-          <input
-            type="text"
+        <div class="input">
+          <input type="text"
+            placeholder="Gender"
             name="gender"
             value={formData.gender}
-            onChange={handleChange}
-          />
-        </label>
+            onChange={handleChange} />
+        </div>
         <br />
 
-        <label>
-          Phone:
-          <input
-            type="text"
+        <div class="input">
+          <input type="text"
+            placeholder="Phone"
             name="phone"
             value={formData.phone}
-            onChange={handleChange}
-          />
-        </label>
+            onChange={handleChange} />
+        </div>
+
         <br />
 
-        <label>
-          Address:
-          <input
-            type="text"
+        <div class="input">
+          <input type="text"
+            placeholder="Address"
             name="address"
             value={formData.address}
-            onChange={handleChange}
-          />
-        </label>
+            onChange={handleChange} />
+        </div>
         <br />
 
-        <label>
-          Email:
-          <input
-            type="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-          />
-        </label>
+        <div class="input">
+        <input type="email"
+         placeholder="Email Address"
+         name="email"
+         value={formData.email}
+         onChange={handleChange} />
+     </div>
         <br />
 
-        <label>
-          Username:
-          <input
-            type="username"
+        <div class="input">
+          <input type="username"
+            placeholder="Username"
             name="username"
             value={formData.username}
-            onChange={handleChange}
-          />
-        </label>
+            onChange={handleChange} />
+        </div>
         <br />
 
-        <label>
-          Password:
-          <input
-            type="password"
+        <div class="input">
+        <input type="password"
+            placeholder="Password"
             name="password"
             value={formData.password}
-            onChange={handleChange}
-          />
-        </label>
+            onChange={handleChange} />
+        </div>
         <br />
 
-        <label>
-          Confirm Password:
+        <div class="input">
           <input
             type="password"
+            placeholder="ConfirmPassword"
             name="confirmPassword"
             value={formData.confirmPassword}
             onChange={handleChange}
           />
-        </label>
+        </div>
         <br />
         <button type="submit">Create an Account</button>
         <button type="button" onClick={handleCancel}>
           Cancel
         </button>
-      </form>
+      
 
       {registrationConfirmed && (
         <div>
@@ -272,7 +257,8 @@ const RegistrationPage = () => {
           <p>Your registration was successful!</p>
         </div>
       )}
-    </div>
+    </form>
   );
 };
+
 export default RegistrationPage;

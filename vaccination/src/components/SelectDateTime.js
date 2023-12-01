@@ -146,12 +146,21 @@ const SelectDateTime = () => {
   };
 
   return (
-    <div align="center">
-      <h1>Select dose date for vaccination.</h1>
-      <div>
-        <label>
+    <div className="select-datetime-container">
+      
+      <header align='center'>
+        <img
+          src={require('./images/logo.svg').default}
+          alt="Vaccination Logo"
+          className="header-logo"
+        />
+        <h1 align='center'>Select dose date for vaccination</h1>
+      </header>
+      <div className="date-selection-container">
+        <label className="select-date-label">
           Select Date:
           <select
+           className="select-date-dropdown"
             value={selectedDate}
             onChange={(e) => {
               const selectedDateValue = e.target.value;
@@ -176,14 +185,14 @@ const SelectDateTime = () => {
             ))}
           </select>
         </label>
-        <p>
+        <p className="date-info">
           {' '}
           Available locations will show once you choose a date. The page will refresh each time you select.
         </p>
       </div>
 
       {locations.length > 0 && (
-        <div>
+        <div className="available-locations">
           <h3>Available Locations</h3>
           <div className="location-container">
             {locations.map((location) => (
@@ -201,7 +210,7 @@ const SelectDateTime = () => {
       )}
     
       {selectedLocation && (
-        <div>
+        <div className="available-time-slots">
           <h3>Available Time Slots</h3>
           <div>
             {availableTimeSlots && availableTimeSlots.map((centerData) => (

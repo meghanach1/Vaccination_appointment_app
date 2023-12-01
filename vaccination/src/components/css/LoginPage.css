@@ -1,4 +1,4 @@
-.container{
+.logincontainer{
     display :flex;
     flex-direction: column;
     margin: auto;
@@ -15,15 +15,15 @@
     width: 100%;
     margin-top: 30px;
 }
-.text{
-    color: #c9302c;
-    font-size: 48px;
+.logintext{
+    color: #ff1900;
+    font-size: 24px;
     font-weight: 700;
 }
 .underline{
     width: 61px;
     height: 6px;
-    background: #c9302c;
+    background: #ff1900;
     border-radius: 9px;
 }
 .inputs{
@@ -46,7 +46,7 @@
 .input img{
     margin: 0px 30px;
     height: 40px;
-    
+ 
 }
 
 .input input{
@@ -67,7 +67,7 @@
 }
 
 .forgot-password span{
-    color: #c9302c;
+    color: #ff1900;
     cursor: pointer;
 }
 .submit-container {
@@ -82,10 +82,33 @@
     width: 220px;
     height: 59px;
     color: #fff;
-    background: #c9302c;
+    background: #ff1900;
     border-radius: 50px;
     font-size: 19px;
     font-weight: 700;
     cursor: pointer;
 
 }
+
+.login-app-header {
+    display: flex;
+    justify-content: center; /* Center the content horizontally */
+    align-items: center;
+    background-color: white;
+    padding: 20px;
+    color: #ff1900;
+    font-size: 40px;
+    font-weight: bold;
+    text-align: center; 
+  }
+
+  body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Arial', sans-serif;
+    background-color: #f0f0f0;
+    background: url('/Users/c0s0hg4/Vaccination_appointment_app/vaccination/src/components/assets/vaccineimage.png') no-repeat center center fixed;
+    background-size: cover;
+    -webkit-backdrop-filter: blur(5px); /* For Chrome */
+    backdrop-filter: blur(5px);
+  }

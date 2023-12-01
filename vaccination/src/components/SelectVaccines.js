@@ -85,11 +85,20 @@ const SelectVaccines = () => {
   };
 
   return (
-    <div align="center">
-      <h1>Select Vaccines.</h1>
+    <div className="select-vaccines-container">
+      <header align='center'>
+        <img
+          src={require('./images/logo.svg').default}
+          alt="Vaccination Logo"
+          className="header-logo"
+        />
+        <h1 align='center'>Select Vaccine</h1>
+      </header>
+
       <h2>Choose up to 3 vaccines for the appointment.</h2>
 
       {/* Recommended Vaccines */}
+      <section className="vaccine-section">
       <div>
         <h3>Recommended Vaccines</h3>
         {vaccineData &&
@@ -113,8 +122,9 @@ const SelectVaccines = () => {
             </div>
           ))}
       </div>
-
+      </section>
       {/* Required Vaccines */}
+      <section className="vaccine-section">
       <div>
         <h3>Required Vaccines</h3>
         {vaccineData &&
@@ -138,7 +148,7 @@ const SelectVaccines = () => {
             </div>
           ))}
       </div>
-
+      </section>
       {/* Continue Scheduling Button */}
       <button type="button" onClick={handleBack}>
           Back
