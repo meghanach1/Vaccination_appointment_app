@@ -60,7 +60,7 @@ const [hasPreviousVaccinations, setHasPreviousVaccinations] = useState('');
       }
 
       // Continue with navigation after successful data save
-      navigate('/payment', {
+      navigate('/appointment', {
         state: {
           patientData,
           totalPrice,
@@ -90,10 +90,9 @@ const [hasPreviousVaccinations, setHasPreviousVaccinations] = useState('');
     }
   };
   const saveMedicalHistoryData = (data) => {
-    // Replace this with your actual logic for saving data to your backend or state
+    
     console.log('Saving Medical History Data:', data);
-    // Example of saving to state (replace with your actual state management logic)
-    // setMedicalHistoryData(data);
+    
   };
 
 // Function to update form validity based on the answers
@@ -443,7 +442,7 @@ const handleBack = () => {
           Back 
         </button>
         {/* Submit button */}
-        <button type="submit" disabled={!formValid} >Continue to Payment</button>
+        <button type="submit" disabled={!formValid} > Confirm Appointment</button>
       </form>
     </div>
   );

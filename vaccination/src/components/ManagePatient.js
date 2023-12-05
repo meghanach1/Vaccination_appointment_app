@@ -20,7 +20,7 @@ const ManagePatient = () => {
 
   };
 
-  
+  console.log("manage patient patientid",patient_id)
 
   return (
     <div>

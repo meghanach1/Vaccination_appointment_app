@@ -14,9 +14,13 @@ const ManageAdmin = () => {
 
         <div className="navigation-links">
           <Link to="/manage-appointments">Manage Appointments</Link>
+          <br/>
           <Link to="/manage-patients">Manage Patients</Link>
+          <br/>
           <Link to="/manage-staff">Manage Vaccination Center Staff</Link>
+          <br/>
           <Link to="/manage-payments">Manage Payments</Link>
+          <br/>
         </div>
 
         {/* Additional content or components for each management section */}

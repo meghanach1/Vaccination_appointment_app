@@ -39,13 +39,11 @@ const ScheduleAppointment = () => {
     // Navigate back to the /manage-patient page
     navigate('/manage-patient', {
       state: {
-        state: {
-          patientData: {
-            fullName: patientFullName,
-            age: patientAge,
-            patient_id,
-          },
+        patientData: {
+          fullName: patientFullName,
+          age: patientAge,
         },
+        patient_id,
       },
     });
   };

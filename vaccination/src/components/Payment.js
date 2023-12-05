@@ -147,7 +147,7 @@ const PaymentForm = ({ onSuccess }) => {
         Back
       </button>
       {paymentError && <p style={{ color: 'red' }}>{paymentError}</p>}
-
+     <br></br>
       <button onClick={() => navigate('/appointment')}>
         Pay Later at the Vaccine Center
       </button>

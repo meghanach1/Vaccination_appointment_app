@@ -79,6 +79,9 @@ const SelectVaccines = () => {
     // Navigate back to the /manage-patient page with patient_id
     navigate('/manage-patient', {
       state: {
+        patientData,
+        selectedVaccines,
+        totalPrice: getTotalPrice(),
         patient_id,
       },
     });

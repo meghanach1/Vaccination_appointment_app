@@ -2,7 +2,9 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useLocation, useNavigate } from 'react-router-dom';
 
+
 const Appointment = () => {
+  console.log('Component Mounted');
   // Extracting data from location state
   const {
     patientData,
@@ -23,7 +25,7 @@ const Appointment = () => {
   // Function to handle saving the appointment data to the database
   const saveAppointment = async () => {
     try {
-      // Make a POST request to the server to save the appointment data
+     
       const response = await axios.post('http://127.0.0.1:5000/appointment/insert_appointment', {
         selected_center_id: selectedLocation,
         selected_vaccines_id: selectedVaccines,
@@ -51,10 +53,10 @@ const Appointment = () => {
     }
   };
 
-  // Use useEffect to call the saveAppointment function when the component mounts
+  
   useEffect(() => {
     saveAppointment();
-  }, []); // Empty dependency array to run the effect only once when the component mounts
+  }, []); 
 
   // Helper function to get selected location name without making an API call
   const getLocationName = (locationId) => {
@@ -76,13 +78,14 @@ const Appointment = () => {
   };
 
   return (
-    <div>
-      <h1>Appointment Confirmation</h1>
+    <div style={{ textAlign: 'center', padding: '20px' }}>
+      <h1 style={{ color: '#333' }}>Appointment Confirmation</h1>
 
-      <form>
-        <div>
+      <form style={{ display:"inline-block",backgroundColor: '#fff', padding: '20px', borderRadius: '8px', boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)', marginTop: '20px' }}>
+   
+        <div >
           <label>Selected Vaccine:</label>
-          <label>{JSON.stringify(selectedVaccines)}</label>
+<label>{JSON.stringify(selectedVaccines)}</label>
         </div>
 
         <div>

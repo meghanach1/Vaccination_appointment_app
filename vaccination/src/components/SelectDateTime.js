@@ -128,14 +128,15 @@ const SelectDateTime = () => {
     // Navigate back to the /manage-patient page with patient_id
     navigate('/manage-patient', {
       state: {
-        state: {
-          patient_id,
-          selectedVaccines,
-          selectedDate,
-          selectedLocation,
-          selectedTimeSlot,
-          totalPrice,
-        },
+        patientData,
+        selectedVaccines,
+        selectedDate,
+        selectedLocation,
+        selectedTimeSlot,
+        totalPrice,
+        patient_id,
+        
+    
       },
     });
   };

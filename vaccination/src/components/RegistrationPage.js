@@ -8,7 +8,6 @@ const RegistrationPage = () => {
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
-    age: '',
     dateOfBirth: '',
     gender: '',
     phone: '',
@@ -16,17 +15,21 @@ const RegistrationPage = () => {
     email: '',
     username: '',
     password: '',
-    confirmPassword: '', 
+    confirmPassword: '',
+    height: '',
+    heightUnit: 'cm',
+    weight: '',
+    weightUnit: 'kg',
   });
-  const [registrationConfirmed, setRegistrationConfirmed] = useState(false);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
 
     // Validation checks
+
     switch (name) {
       case 'firstName':
       case 'lastName':
-      case 'gender':
         // Allow only letters and spaces or an empty string
         if (/^[A-Za-z\s]*$/.test(value) || value === '') {
           setFormData({
@@ -36,21 +39,17 @@ const RegistrationPage = () => {
         }
         break;
 
-      case 'age':
-        // Allow only numbers or an empty string
-        if (/^\d*$/.test(value) || value === '') {
-          setFormData({
-            ...formData,
-            [name]: value,
-          });
-        }
-        break;
-
       case 'dateOfBirth':
-        // Allow any string (you may want to use a date picker for a more robust solution)
         setFormData({
           ...formData,
-          [name]: value,
+          dateOfBirth: value,
+        });
+        break;
+
+      case 'gender':
+        setFormData({
+          ...formData,
+          gender: value,
         });
         break;
 
@@ -59,42 +58,12 @@ const RegistrationPage = () => {
         if (/^\d{0,10}$/.test(value) || value === '') {
           setFormData({
             ...formData,
-            [name]: value,
+            phone: value,
           });
         }
         break;
 
-      case 'email':
-        // Allow any string (you may want to use a more robust email validation)
-        setFormData({
-          ...formData,
-          [name]: value,
-        });
-        break;
-
-      case 'username':
-        // Allow any string (you may want to use a more robust password validation)
-        setFormData({
-          ...formData,
-          [name]: value,
-        });
-        break;
-
-      case 'password':
-        // Allow any string (you may want to use a more robust password validation)
-        setFormData({
-          ...formData,
-          [name]: value,
-        });
-        break;
-
-      case 'confirmPassword':
-        // Allow any string (you may want to use a more robust password validation)
-        setFormData({
-          ...formData,
-          [name]: value,
-        });
-        break;
+      // ... (other cases)
 
       default:
         setFormData({
@@ -140,123 +109,171 @@ const RegistrationPage = () => {
     <form onSubmit={handleSubmit}>
       <h1 align='center'>Registration Page</h1>
      
-      <div class="input">
-          <input
-            type="text"
-            placeholder="First Name"
-            name="firstName"
-            value={formData.firstName}
-            onChange={handleChange} />
-        </div>
+      <div className="input">
+        <input
+          type="text"
+          placeholder="First Name"
+          name="firstName"
+          value={formData.firstName}
+          onChange={handleChange}
+        />
+      </div>
 
-        <br />
+      <br />
 
-        <div class="input">
-          <input type="text"
-            placeholder="Last Name"
-            name="lastName"
-            value={formData.lastName}
-            onChange={handleChange} />
-        </div>
-        <br />
-        
-     
+      <div className="input">
+        <input
+          type="text"
+          placeholder="Last Name"
+          name="lastName"
+          value={formData.lastName}
+          onChange={handleChange}
+        />
+      </div>
+      <br />
 
-        <div class="input">
-          <input type="text"
-            placeholder="Age"
-            name="age"
-            value={formData.age}
-            onChange={handleChange} />
-        </div>
-        <br />
+      <div className="input">
+        <input
+          type="date"
+          name="dateOfBirth"
+          placeholder="Date of Birth"
+          value={formData.dateOfBirth}
+          onChange={handleChange}
+        />
+      </div>
+      <br />
 
-        <div class="input">
-          <input type="text"
-            placeholder="Date of Birth"
-            name="dateOfBirth"
-            value={formData.dateOfBirth}
-            onChange={handleChange} />
-        </div>
-        <br />
+      <div className="input">
+       
+        <select
+          name="gender"
+          value={formData.gender}
+          onChange={handleChange}
+          className="gender-dropdown" 
+        >
+          <option value="">Select Gender</option>
+          <option value="Male">Male</option>
+          <option value="Female">Female</option>
+          <option value="PreferNotToSay">Preferred Not to Say</option>
+        </select>
+      </div>
+      <br />
 
-        <div class="input">
-          <input type="text"
-            placeholder="Gender"
-            name="gender"
-            value={formData.gender}
-            onChange={handleChange} />
-        </div>
-        <br />
+      <div className="input">
+        <input
+          type="text"
+          placeholder="Phone"
+          name="phone"
+          value={formData.phone}
+          onChange={handleChange}
+        />
+      </div>
 
-        <div class="input">
-          <input type="text"
-            placeholder="Phone"
-            name="phone"
-            value={formData.phone}
-            onChange={handleChange} />
-        </div>
+      <br />
 
-        <br />
+      <div className="input">
+        <input
+          type="text"
+          placeholder="Address"
+          name="address"
+          value={formData.address}
+          onChange={handleChange}
+        />
+      </div>
+      <br />
 
-        <div class="input">
-          <input type="text"
-            placeholder="Address"
-            name="address"
-            value={formData.address}
-            onChange={handleChange} />
-        </div>
-        <br />
+      <div className="input">
+        <input
+          type="email"
+          placeholder="Email Address"
+          name="email"
+          value={formData.email}
+          onChange={handleChange}
+        />
+      </div>
+      <br />
 
-        <div class="input">
-        <input type="email"
-         placeholder="Email Address"
-         name="email"
-         value={formData.email}
-         onChange={handleChange} />
-     </div>
-        <br />
+      <div className="input">
+        <input
+          type="username"
+          placeholder="Username"
+          name="username"
+          value={formData.username}
+          onChange={handleChange}
+        />
+      </div>
+      <br />
 
-        <div class="input">
-          <input type="username"
-            placeholder="Username"
-            name="username"
-            value={formData.username}
-            onChange={handleChange} />
-        </div>
-        <br />
+      <div className="input">
+        <input
+          type="password"
+          placeholder="Password"
+          name="password"
+          value={formData.password}
+          onChange={handleChange}
+        />
+      </div>
+      <br />
 
-        <div class="input">
-        <input type="password"
-            placeholder="Password"
-            name="password"
-            value={formData.password}
-            onChange={handleChange} />
-        </div>
-        <br />
+      <div className="input">
+        <input
+          type="password"
+          placeholder="ConfirmPassword"
+          name="confirmPassword"
+          value={formData.confirmPassword}
+          onChange={handleChange}
+        />
+      </div>
+      <br />
 
-        <div class="input">
-          <input
-            type="password"
-            placeholder="ConfirmPassword"
-            name="confirmPassword"
-            value={formData.confirmPassword}
-            onChange={handleChange}
-          />
-        </div>
-        <br />
-        <button type="submit">Create an Account</button>
-        <button type="button" onClick={handleCancel}>
-          Cancel
-        </button>
-      
+      <div className="input">
+       
+        <input
+          type="text"
+          placeholder={`Height (${formData.heightUnit})`}
+          name="height"
+          value={formData.height}
+          onChange={handleChange}
+        />
+        <select
+          name="heightUnit"
+          value={formData.heightUnit}
+          onChange={handleChange}
+          className="unit-dropdown"
+        >
+           <option value="in">in</option>
+          <option value="cm">cm</option>
+         
+        </select>
+      </div>
+      <br />
 
-      {registrationConfirmed && (
-        <div>
-          <h2>Registration Confirmed</h2>
-          <p>Your registration was successful!</p>
-        </div>
-      )}
+      <div className="input">
+       
+        <input
+          type="text"
+          placeholder={`Weight (${formData.weightUnit})`}
+          name="weight"
+          value={formData.weight}
+          onChange={handleChange}
+        />
+        <select
+          name="weightUnit"
+          value={formData.weightUnit}
+          onChange={handleChange}
+          className="unit-dropdown"
+        >
+           <option value="lbs">lbs</option>
+          <option value="kg">kg</option>
+         
+        </select>
+      </div>
+      <br />
+
+      <button type="submit">Create an Account</button>
+      <button type="button" onClick={handleCancel}>
+        Cancel
+      </button>
     </form>
   );
 };
