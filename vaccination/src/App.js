@@ -19,6 +19,7 @@ import Payment from './components/Payment';
 import Appointment from './components/Appointment';
 import ManagePatients from './components/Managepatients';
 import ProfileComponent from './components/ProfileComponent';
+import PatientInfoEditor from './components/PatientInfoEditor';
 
 
 const App = () => {
@@ -76,6 +77,9 @@ const App = () => {
          <Route path="/manage-patient" element={<ManagePatient />} />
 
          <Route path="/manage-patient/profile/:patient_id" element={<ProfileComponent />} />
+
+         <Route path="/patient-info-editor/:appointmentId" element={<PatientInfoEditor />} />
+
         
         
         

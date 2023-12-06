@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import './css/LoginPage.css';
 
-import username from '/Users/Megha/Desktop/Vaccination_appointment/vaccination/src/components/assets/username.svg'
-import password from '/Users/Megha/Desktop/Vaccination_appointment/vaccination/src/components/assets/password.svg'
+import username from './assets/username.svg'
+import password from './assets/password.svg'
 
 const LoginPage = () => {
   const navigate = useNavigate();
