@@ -22,13 +22,14 @@ const PatientRecords = () => {
     const fetchData = async () => {
       try {
         const response = await fetch(`http://127.0.0.1:5000/appointment/appointments/${patient_id}`);
-
+        console.log("response",response)
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
         }
 
         const data = await response.json();
         setPatientRecords(data.appointments);
+        console.log("patientRecords",patientRecords)
       } catch (error) {
         setError(error.message);
       }
@@ -73,7 +74,7 @@ const PatientRecords = () => {
                 {patientRecords.map((record, index) => (
                   <TableRow key={record._id}>
                     <TableCell>{index + 1}</TableCell>
-                    <TableCell>{record.center_name}</TableCell>
+                    <TableCell>{record.selected_location_name}</TableCell>
                     <TableCell>{record.selected_date}</TableCell>
                     <TableCell>{record.selected_vaccines_id.join(', ')}</TableCell>
                     <TableCell>{record.selected_timeslot}</TableCell>

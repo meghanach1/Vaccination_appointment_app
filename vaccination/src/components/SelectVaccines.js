@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { Typography, Checkbox, Button, Container, Grid, Card, CardContent } from '@mui/material';
 import './css/SelectVaccines.css';
 
 const SelectVaccines = () => {
@@ -8,19 +9,16 @@ const SelectVaccines = () => {
   const { patientData } = location.state || { patientData: {} };
   const age = patientData.age;
 
-  const patient_id  = patientData.patient_id;
+  const patient_id = patientData.patient_id;
   const [selectedVaccines, setSelectedVaccines] = useState([]);
   const [vaccineData, setVaccineData] = useState({ recommendedVaccines: [], requiredVaccines: [] });
-  console.log("selectvaccinepatient",patientData.patient_id)
-  console.log("selectvaccinepatient",patient_id)
+
   useEffect(() => {
     const fetchVaccineData = async () => {
       try {
-        // Fetch recommended and required vaccines based on the patient's age
         if (age) {
           const response = await fetch(`http://127.0.0.1:5000/vaccine/get-vaccines?age=${age}`);
           const data = await response.json();
-          console.log('Vaccine Data:', data);
           setVaccineData(data);
         }
       } catch (error) {
@@ -29,19 +27,16 @@ const SelectVaccines = () => {
     };
 
     fetchVaccineData();
-  }, [age]); // Include 'age' as a dependency to re-run the effect when 'age' changes
+  }, [age]);
 
   const handleCheckboxChange = (vaccine) => {
     setSelectedVaccines((prevSelected) => {
       if (prevSelected.includes(vaccine.name)) {
-        // Deselect if already selected
         return prevSelected.filter((name) => name !== vaccine.name);
       } else {
-        // Select if not selected and less than 3 selected
         if (prevSelected.length < 3) {
           return [...prevSelected, vaccine.name];
         } else {
-          // If already selected 3, do nothing
           return prevSelected;
         }
       }
@@ -51,7 +46,6 @@ const SelectVaccines = () => {
   const isContinueButtonEnabled = selectedVaccines.length >= 1 && selectedVaccines.length <= 3;
 
   const getTotalPrice = () => {
-    // Calculate the total price of selected vaccines
     return selectedVaccines.reduce((totalPrice, vaccineName) => {
       const selectedVaccine = [...vaccineData.recommended, ...vaccineData.required].find(
         (vaccine) => vaccine.name === vaccineName
@@ -60,10 +54,9 @@ const SelectVaccines = () => {
       return totalPrice + (selectedVaccine ? selectedVaccine.price : 0);
     }, 0);
   };
-  console.log("selectvaccines totatlaprice",getTotalPrice)
+
   const handleContinueScheduling = () => {
     if (isContinueButtonEnabled) {
-      // Navigate to SelectDateTime.js with selected vaccines, pin code, and total price
       navigate('/selectdatetime', {
         state: {
           patientData,
@@ -73,10 +66,9 @@ const SelectVaccines = () => {
         },
       });
     }
-
   };
+
   const handleBack = () => {
-    // Navigate back to the /manage-patient page with patient_id
     navigate('/manage-patient', {
       state: {
         patientData,
@@ -88,86 +80,87 @@ const SelectVaccines = () => {
   };
 
   return (
-    <div className="select-vaccines-container">
-      <header align='center'>
-        <img
-          src={require('./images/logo.svg').default}
-          alt="Vaccination Logo"
-          className="header-logo"
-        />
-        <h1 align='center'>Select Vaccine</h1>
-      </header>
+    <Container component="div" className="select-vaccines-container">
+      <Typography variant="h4" align="center" gutterBottom>
+        Select Vaccine
+      </Typography>
+      <Typography variant="h6" gutterBottom>
+        Choose up to 3 vaccines for the appointment.
+      </Typography>
 
-      <h2>Choose up to 3 vaccines for the appointment.</h2>
+      <Grid container spacing={6}>
+        {/* Recommended Vaccines */}
+        <Grid item xs={12} md={6}>
+          <Card>
+            <CardContent>
+              <Typography variant="h6">Recommended Vaccines</Typography>
+              {vaccineData &&
+                vaccineData.recommended &&
+                vaccineData.recommended.map((vaccine, index) => (
+                  <div key={index}>
+                    <Checkbox
+                      checked={selectedVaccines.includes(vaccine.name)}
+                      onChange={() => handleCheckboxChange(vaccine)}
+                    />
+                    <strong>{vaccine.name}</strong>
+                    <Typography style={{ color: 'black' }}>
+                      {vaccine.description}
+                      <br />
+                      (Price: ${vaccine.price}, Required Doses: {vaccine.requiredDoses})
+                    </Typography>
+                  </div>
+                ))}
+            </CardContent>
+          </Card>
+        </Grid>
 
-      {/* Recommended Vaccines */}
-      <section className="vaccine-section">
-      <div>
-        <h3>Recommended Vaccines</h3>
-        {vaccineData &&
-          vaccineData.recommended &&
-          vaccineData.recommended.map((vaccine, index) => (
-            <div key={index}>
-              <label>
-                <input
-                  type="checkbox"
-                  checked={selectedVaccines.includes(vaccine.name)}
-                  onChange={() => handleCheckboxChange(vaccine)}
-                />
-                <strong>{vaccine.name}</strong>
-              </label>
+        {/* Required Vaccines */}
+        <Grid item xs={12} md={6}>
+          <Card>
+            <CardContent>
+              <Typography variant="h6">Required Vaccines</Typography>
+              {vaccineData &&
+                vaccineData.required &&
+                vaccineData.required.map((vaccine, index) => (
+                  <div key={index}>
+                    <Checkbox
+                      checked={selectedVaccines.includes(vaccine.name)}
+                      onChange={() => handleCheckboxChange(vaccine)}
+                    />
+                    <strong>{vaccine.name}</strong>
+                    <Typography style={{ color: 'black' }}>
+                      {vaccine.description}
+                      <br />
+                      (Price: ${vaccine.price}, Required Doses: {vaccine.requiredDoses})
+                    </Typography>
+                  </div>
+                ))}
+            </CardContent>
+          </Card>
+        </Grid>
+      </Grid>
 
-              <p style={{ color: 'black' }}>
-                {vaccine.description}
-                <br />
-                (Price: ${vaccine.price}, Required Doses: {vaccine.requiredDoses})
-              </p>
-            </div>
-          ))}
-      </div>
-      </section>
-      {/* Required Vaccines */}
-      <section className="vaccine-section">
-      <div>
-        <h3>Required Vaccines</h3>
-        {vaccineData &&
-          vaccineData.required &&
-          vaccineData.required.map((vaccine, index) => (
-            <div key={index}>
-              <label>
-                <input
-                  type="checkbox"
-                  checked={selectedVaccines.includes(vaccine.name)}
-                  onChange={() => handleCheckboxChange(vaccine)}
-                />
-                <strong>{vaccine.name}</strong>
-              </label>
-
-              <p style={{ color: 'black' }}>
-                {vaccine.description}
-                <br />
-                (Price: ${vaccine.price}, Required Doses: {vaccine.requiredDoses})
-              </p>
-            </div>
-          ))}
-      </div>
-      </section>
       {/* Continue Scheduling Button */}
-      <button type="button" onClick={handleBack}>
-          Back
-        </button>
-      <button type="button" onClick={handleContinueScheduling} disabled={!isContinueButtonEnabled}>
+      <Button type="button" variant="contained" onClick={handleBack} color='error'>
+        Back
+      </Button>
+      <Button
+        type="button"
+        variant="contained"
+        color="error"
+        onClick={handleContinueScheduling}
+        disabled={!isContinueButtonEnabled}
+      >
         Continue Scheduling
-      </button>
-   {/* Back button */}
-   
+      </Button>
+
       {/* Display total price */}
       {isContinueButtonEnabled && (
-        <p style={{ marginTop: '10px', color: 'green' }}>
+        <Typography variant="subtitle1" style={{ marginTop: '10px', color: 'error' }}>
           Total Price: ${getTotalPrice().toFixed(2)}
-        </p>
+        </Typography>
       )}
-    </div>
+    </Container>
   );
 };
 

@@ -3,6 +3,7 @@ import axios from 'axios';
 import { DataGrid } from '@mui/x-data-grid';
 import PatientInfoEditor from './PatientInfoEditor';
 import { useNavigate } from 'react-router-dom';
+import { Button } from '@mui/material';
 
 const ManageAppointments = () => {
   const navigate = useNavigate();
@@ -15,16 +16,13 @@ const ManageAppointments = () => {
     fetchAppointments();
   }, []);
 
-
   const fetchAppointments = async () => {
     try {
       const response = await axios.get('http://127.0.0.1:5000/appointment/get_all_appointments');
 
       const updatedAppointments = await Promise.all(response.data.appointments.map(async (appointment) => {
         const patientResponse = await axios.get(`http://127.0.0.1:5000/patient/${appointment.patient_id}`);
-
-        
-        const { full_name, email} = patientResponse.data;
+        const { full_name, email } = patientResponse.data;
 
         const centerResponse = await axios.get(`http://127.0.0.1:5000/vaccine/${appointment.selected_center_id}`);
         const centerName = centerResponse.data.center_name;
@@ -33,6 +31,7 @@ const ManageAppointments = () => {
       }));
 
       setAppointments(updatedAppointments);
+      console.log("updatedAppointments",updatedAppointments)
     } catch (error) {
       console.error('Error fetching appointments:', error.message);
     }
@@ -41,11 +40,12 @@ const ManageAppointments = () => {
   const columns = [
     { field: 'patient_name', headerName: 'Patient Name', flex: 1 },
     { field: 'patient_email', headerName: 'Patient Email', flex: 1 },
-    { field: 'center_name', headerName: 'Selected Center Name', flex: 1 },
-    { field: 'selected_date', headerName: 'Selected Date', flex: 1 },
-    { field: 'selected_timeslot', headerName: 'Selected Time Slot', flex: 1 },
     { field: 'selected_vaccines_id', headerName: 'Selected Vaccines(s)', flex: 1 },
-    {
+    { field: 'selected_date', headerName: 'Selected Date', flex: 1 },
+    { field: 'center_name', headerName: 'Selected Center Name', flex: 1 },
+    { field: 'selected_timeslot', headerName: 'Selected Time Slot', flex: 1 },
+    
+   /*  {
       field: 'actions',
       headerName: 'Actions',
       sortable: false,
@@ -55,41 +55,27 @@ const ManageAppointments = () => {
           <button onClick={() => handleEdit(params.row.id)} className="edit-button">
             Edit
           </button>
-          <button onClick={() => handleDelete(params.row.id)} className="delete-button">
-            Delete
-          </button>
         </div>
       ),
-    },
+    }, */
   ];
 
   const handleEdit = async (appointmentId) => {
-     const selected = appointments.find((appointment) => appointment._id === appointmentId);
-    
-     navigate(`/patient-info-editor/${selected.appointmentId}`, {
+    const selected = appointments.find((appointment) => appointment._id === appointmentId);
+
+    setSelectedAppointment(selected);
+    setEditingPatient(selected.patient_id);
+    setEditMode(true);
+
+    // Navigate to /patient-info-editor/:appointmentId
+    navigate(`/patient-info-editor/${selected._id}`,{
       state: { selected  },
     });
-  };
 
-  const handleDelete = (appointmentId) => {
+    
+    
     
   };
-
-  const handleSaveAppointment = async (editedData) => {
-    try {
-      await axios.put(`http://127.0.0.1:5000/appointment/update_appointment/${selectedAppointment.id}`, editedData);
-
-      setAppointments((prevAppointments) =>
-        prevAppointments.map((appointment) =>
-          appointment.id === selectedAppointment.id ? { ...appointment, ...editedData } : appointment
-        )
-      );
-      setEditMode(false);
-    } catch (error) {
-      console.error('Error updating appointment:', error.message);
-    }
-  };
-
   const handleSavePatientInfo = async (editedPatientInfo) => {
     try {
       await axios.put(`http://127.0.0.1:5000/patient/update_patient/${editingPatient}`, editedPatientInfo);
@@ -103,6 +89,11 @@ const ManageAppointments = () => {
     }
   };
 
+  const handleBackClick = () => {
+    // Navigate to /manage-admin
+    navigate('/manage-admin');
+  };
+
   return (
     <div>
       <h1 align="center">Manage Appointments</h1>
@@ -112,14 +103,16 @@ const ManageAppointments = () => {
           columns={columns}
           pageSize={5}
           rowsPerPageOptions={[5, 10, 20]}
-          checkboxSelection
-          disableSelectionOnClick
+          
         />
+        <Button variant="contained" color="primary" onClick={handleBackClick}>
+          Back
+        </Button>
       </div>
       {editMode && editingPatient && (
         <PatientInfoEditor
           patientId={editingPatient}
-          appointmentId={selectedAppointment.id}  // Assuming you have appointmentId available
+          appointmentId={selectedAppointment.id}
           onSave={handleSavePatientInfo}
           onCancel={() => setEditingPatient(null)}
         />
@@ -127,7 +120,5 @@ const ManageAppointments = () => {
     </div>
   );
 };
-
-
 
 export default ManageAppointments;

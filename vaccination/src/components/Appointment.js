@@ -25,7 +25,6 @@ const Appointment = () => {
   // Function to handle saving the appointment data to the database
   const saveAppointment = async () => {
     try {
-     
       const response = await axios.post('http://127.0.0.1:5000/appointment/insert_appointment', {
         selected_center_id: selectedLocation,
         selected_vaccines_id: selectedVaccines,
@@ -37,7 +36,30 @@ const Appointment = () => {
         selected_date: selectedDate,
         user_role: user_role,
         amount_paid: totalPrice,
+        selectedLocationName: selectedLocation,
       });
+
+      // Assuming the server responds with some confirmation or additional data
+      const newAppointmentId = response.data.appointment_id;
+      console.log("response.data",newAppointmentId)
+      console.log("response.data",response)
+      console.log("response.data",response.data)
+
+      // Create payment record for the new appointment
+      const paymentResponse = await axios.post('http://127.0.0.1:5000/payment/create_payment', {
+        patient_id,
+        appointment_id: newAppointmentId,
+        date_paid: '', // You may need to set the date_paid based on your requirements
+        amount: totalPrice,
+        payment_method: '', // You may need to set the payment_method based on your requirements
+        payment_status: 'Pending',
+      });
+
+      if (!paymentResponse.ok) {
+        throw new Error(`HTTP error! Status: ${paymentResponse.status}`);
+      }
+
+      console.log('Payment record created:', paymentResponse.data);
 
       // Update state with the response data
       setAppointmentData(response.data);
@@ -46,13 +68,11 @@ const Appointment = () => {
       const locationName = getLocationName(selectedLocation);
       setSelectedLocationName(locationName);
 
-      // Assuming the server responds with some confirmation or additional data
       console.log('Appointment saved:', response.data);
     } catch (error) {
       console.error('Error saving appointment:', error.message);
     }
   };
-
   
   useEffect(() => {
     saveAppointment();
@@ -61,7 +81,7 @@ const Appointment = () => {
   // Helper function to get selected location name without making an API call
   const getLocationName = (locationId) => {
     const locationMap = {
-      '655d0bf382d9f899c56eb14a': '123 Main Street, Cityville',
+      '655d0bf382d9f899c56eb14a': 'City Health Center',
       '655e96d41a133dcc3da819b2': 'Suburb Wellness Hub',
       '655e98a91a133dcc3dae00c7': 'Rural Health Clinic',
       '655e98cd1a133dcc3dae643d': 'University Medical Center',
@@ -74,7 +94,11 @@ const Appointment = () => {
 
   // Function to navigate back to the "/manage-patient" route
   const navigateToManagePatient = () => {
-    navigate('/manage-patient');
+    navigate('/manage-patient', {
+      state: {
+        patient_id,
+      },
+    });
   };
 
   return (
@@ -123,3 +147,8 @@ const Appointment = () => {
 };
 
 export default Appointment;
+
+
+
+
+

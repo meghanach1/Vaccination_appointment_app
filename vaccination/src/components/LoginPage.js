@@ -123,7 +123,7 @@ const LoginPage = () => {
           alt="Vaccination Logo"
           className="header-logo"
         />
-      Vaccination Appointmnet Booking
+      Vaccination Appointment Booking
       </header>
       <div class="logincontainer">
         <div class="header">

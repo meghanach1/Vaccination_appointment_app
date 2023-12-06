@@ -1,4 +1,3 @@
-// Import necessary dependencies
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams, useLocation, useNavigate } from 'react-router-dom';
@@ -31,6 +30,7 @@ const PatientInfoEditor = () => {
         console.log('selected:', selected.data);
         const patientResponse = await axios.get(`http://127.0.0.1:5000/patient/${selected.patient_id}`);
         const centerResponse = await axios.get(`http://127.0.0.1:5000/vaccine/${selected.selected_center_id}`);
+        
         console.log('patientResponse:', patientResponse.data);
         console.log('centerResponse:', centerResponse.data);
         console.log('select', selected._id);
@@ -87,30 +87,34 @@ const PatientInfoEditor = () => {
     <div className="patient-info-editor">
       <h2>Edit Patient Information</h2>
       {updateSuccess && <p className="success-message">Update successful!</p>}
+      
+      {/* Full Name */}
       <div className="input-container">
         <label>Full Name:</label>
         <input
           type="text"
           value={patientInfo.full_name}
-          onChange={(e) => handleFieldChange('full_name', e.target.value)}
+          disabled // Make the input disabled
         />
       </div>
 
+      {/* Email */}
       <div className="input-container">
         <label>Email:</label>
         <input
           type="text"
           value={patientInfo.email}
-          onChange={(e) => handleFieldChange('email', e.target.value)}
+          disabled // Make the input disabled
         />
       </div>
 
+      {/* Age */}
       <div className="input-container">
         <label>Age:</label>
         <input
           type="number"
           value={patientInfo.age}
-          onChange={(e) => handleFieldChange('age', e.target.value)}
+          disabled // Make the input disabled
         />
       </div>
 
@@ -197,8 +201,9 @@ const PatientInfoEditor = () => {
       </div>
       {!editMode && <button onClick={handleEdit}>Edit</button>}
       {editMode && <button onClick={handleSaveAppointment}>Save</button>}
-      {updateSuccess && <button onClick={handleBack}>Back</button>}
+      <button onClick={handleBack}>Back</button>
     </div>
+    
   );
 };
 

@@ -67,7 +67,7 @@ const App = () => {
         <Route path="/medical-history" element={<MedicalHistory />} />
 
         {/* Select payment route */}
-        <Route path="/payment" element={<Payment />} />
+        <Route path="/payment/:id" element={<Payment />} />
 
         {/* Select appointment route */}
         <Route path="/appointment" element={<Appointment />} />
