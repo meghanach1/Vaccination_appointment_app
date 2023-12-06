@@ -18,7 +18,6 @@ import MedicalHistory from './components/MedicalHistory';
 import Payment from './components/Payment';
 import Appointment from './components/Appointment';
 import ManagePatients from './components/Managepatients';
-import ProfileComponent from './components/ProfileComponent';
 import PatientInfoEditor from './components/PatientInfoEditor';
 
 
@@ -52,13 +51,13 @@ const App = () => {
         <Route path="/schedule-appointment" element={<ScheduleAppointment />} />
 
         {/* Patient routes */}
-        <Route path="/manage-patient" element={<ManagePatient />}>
-          {/* Patient profile route */}
-          <Route path="profile" element={<PatientProfile />} />
+        <Route path="/manage-patient" element={<ManagePatient />} />
+          
+          <Route path="/profile" element={<PatientProfile />} />
           
           {/* Patient records route */}
-          <Route path="records" element={<PatientRecords />} />
-        </Route>
+          <Route path="/records" element={<PatientRecords />} />
+      
 
         {/* Select vaccines route */}
         <Route path="/select-vaccines" element={<SelectVaccines />} />
@@ -76,10 +75,7 @@ const App = () => {
          {/* Manage patients route */}
          <Route path="/manage-patient" element={<ManagePatient />} />
 
-         <Route path="/manage-patient/profile/:patient_id" element={<ProfileComponent />} />
-
          <Route path="/patient-info-editor/:appointmentId" element={<PatientInfoEditor />} />
-
         
         
         
